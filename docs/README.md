@@ -16,6 +16,9 @@ Solidity contracts, deployment, and blockchain integration.
 ### [Packages](./packages/README.md)
 Shared libraries and utilities used across the monorepo.
 
+### [Subgraph](./subgraph/README.md)
+GraphQL API for querying indexed blockchain data.
+
 ### [Architecture](./architecture/README.md)
 System design, technical decisions, and architectural patterns.
 
@@ -49,3 +52,5 @@ Guidelines for contributing to the project.
 - [Smart Contract Addresses](./contract/addresses.md)
 - [Component Library](./web/components.md)
 - [Development Commands](./guides/commands.md)
+- [Subgraph Queries](./subgraph/query-examples.md)
+- [Subgraph Setup](./subgraph/setup-guide.md)

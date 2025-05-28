@@ -9,10 +9,12 @@
     "create-local": "graph create --node http://localhost:8020/ docuvault",
     "remove-local": "graph remove --node http://localhost:8020/ docuvault",
     "update-address": "ts-node scripts/update-contract-address.ts",
+    "sync-addresses": "node scripts/sync-addresses.mjs",
     "start-local": "docker compose up -d",
     "stop-local": "docker compose down",
     "logs": "docker compose logs -f graph-node",
     "full-deploy": "pnpm codegen && pnpm build && pnpm create-local && pnpm deploy-local",
+    "deploy:hardhat": "bash scripts/deploy-hardhat-local.sh",
     "build:ts": "tsc || exit 0",
     "build:tests": "tsc -p tests/tsconfig.json && cp -r tests/queries dist/tests/",
     "lint": "eslint 'src/**/*.ts' 'scripts/**/*.ts'",
@@ -23,9 +25,9 @@
     "prepare-prod": "bash scripts/prepare-production.sh",
     "test-queries": "npx ts-node dist/tests/query-tests.js",
     "test:unified": "npx ts-node dist/tests/unified-query-tester.js",
+    "test:simple": "node scripts/test-queries.mjs",
     "apply-cache": "node scripts/apply-cache-config.js",
-    "setup-linux": "bash scripts/setup.sh",
-    "sync-schema": "node scripts/sync-schema.js"
+    "setup-linux": "bash scripts/setup.sh"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "^0.97.0",

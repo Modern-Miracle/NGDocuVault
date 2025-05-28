@@ -31,6 +31,12 @@ Overview of the documentation structure and quick links.
 - Authentication utilities
 - UI components
 
+### [Subgraph](./subgraph/README.md)
+- GraphQL API for blockchain data
+- Event indexing and querying
+- Real-time data access
+- Performance optimization
+
 ### [Architecture](./architecture/README.md)
 - System design
 - Technical decisions
@@ -61,6 +67,8 @@ Overview of the documentation structure and quick links.
 Track all recent changes and updates to the project.
 
 ### Latest Changes
+- Added comprehensive Subgraph documentation
+- Implemented local Graph Node deployment
 - Updated UserManagement component with improved authentication
 - Created comprehensive documentation structure
 - Added development command reference
@@ -75,6 +83,8 @@ Track all recent changes and updates to the project.
 - [API Endpoints](./api/endpoints.md)
 - [IPFS Setup Guide](./guides/ipfs-setup.md)
 - [IPFS API Documentation](./api/ipfs.md)
+- [Subgraph Development](./subgraph/development-guide.md)
+- [GraphQL Query Examples](./subgraph/query-examples.md)
 
 ### For Users
 - [Authentication Flow](./guides/authentication-flow.md)

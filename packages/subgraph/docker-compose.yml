@@ -19,7 +19,7 @@ services:
       postgres_pass: let-me-in
       postgres_db: graph-node
       ipfs: 'ipfs:5001'
-      ethereum: 'hardhat:http://172.17.0.1:8545'
+      ethereum: 'hardhat:http://host.docker.internal:8545'
       GRAPH_LOG: info
       ETHEREUM_POLLING_INTERVAL: 1000
       GRAPH_ALLOW_NON_DETERMINISTIC_IPFS: 'true'
@@ -39,12 +39,9 @@ services:
 
   postgres:
     container_name: docuvault-graph-postgres
-    image: postgres:14
+    image: postgres:16-alpine
     ports:
-      - '5433:5432'
-    command:
-      - 'postgres'
-      - '-cshared_preload_libraries=pg_stat_statements'
+      - '5434:5432'
     environment:
       POSTGRES_USER: graph-node
       POSTGRES_PASSWORD: let-me-in
