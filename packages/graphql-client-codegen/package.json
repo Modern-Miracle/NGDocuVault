@@ -8,7 +8,7 @@
     "build": "tsc",
     "dev": "tsc --watch",
     "clean": "rimraf dist",
-    "generate": "graphql-codegen",
+    "generate": "graphql-codegen && node scripts/post-codegen.js",
     "test": "jest",
     "lint": "eslint --ext .ts ./src",
     "check-types": "tsc --noEmit"

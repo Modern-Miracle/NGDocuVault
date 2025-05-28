@@ -1,26 +1,10 @@
-// Export generated GraphQL types - use specific re-export to avoid conflicts
-import type {
-  GetDocumentsQuery,
-  GetDocumentsQueryVariables,
-  GetDocumentQuery,
-  GetDocumentQueryVariables,
-  GetDocumentsByHolderQuery,
-  GetDocumentsByHolderQueryVariables,
-  GetIssuerQuery,
-  GetIssuerQueryVariables,
-  GetHolderQuery,
-  GetHolderQueryVariables,
-  GetDocumentsCountQuery,
-  GetIssuersQuery,
-  GetIssuersQueryVariables,
+// Export generated GraphQL types and enums
+export {
   DocumentType,
-  ConsentStatus,
-  Document,
-  Issuer,
-  Holder,
+  ConsentStatus
 } from './generated/graphql';
 
-// Re-export types
+// Export type-only imports
 export type {
   GetDocumentsQuery,
   GetDocumentsQueryVariables,
@@ -35,12 +19,21 @@ export type {
   GetDocumentsCountQuery,
   GetIssuersQuery,
   GetIssuersQueryVariables,
-  DocumentType,
-  ConsentStatus,
   Document,
   Issuer,
   Holder,
-};
+  ShareRequest,
+  VerificationRequest,
+  Did,
+  Credential,
+  Role,
+  TrustedIssuer,
+  Verifier,
+  Verification,
+  AgeVerification,
+  FhirVerification,
+  HashVerification
+} from './generated/graphql';
 
 // Export GraphQL Request SDK
 export { getSdk } from './generated/graphql-request';

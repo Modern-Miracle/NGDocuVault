@@ -51,6 +51,10 @@ generates:
         DateTime: Date
       reactQueryVersion: 5
       legacyMode: false
+      addInfiniteQuery: true
+      errorType: Error
+      importOperationTypesFrom: Types
+      preResolveTypes: true
 
 hooks:
   afterAllFileWrite:

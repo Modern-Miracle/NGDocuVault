@@ -474,3 +474,129 @@ export type GetIssuersQuery = {
     | null
     | undefined;
 };
+
+export type GetDidQueryVariables = Exact<{
+  id: Scalars["ID"]["input"];
+}>;
+
+export type GetDidQuery = {
+  __typename?: "Query";
+  did?:
+    | {
+        __typename?: "DID";
+        id: string;
+        did: string;
+        active: boolean;
+        controller: string;
+        lastUpdated: string;
+        publicKey?: string | null | undefined;
+        document?: string | null | undefined;
+        roles: Array<{
+          __typename?: "Role";
+          id: string;
+          role: string;
+          granted: boolean;
+          grantedAt: string;
+          revokedAt?: string | null | undefined;
+        }>;
+        credentials: Array<{
+          __typename?: "Credential";
+          id: string;
+          credentialId: string;
+          credentialType: string;
+          issuer: string;
+          issuedAt: string;
+          verified?: boolean | null | undefined;
+          verifiedAt?: string | null | undefined;
+        }>;
+      }
+    | null
+    | undefined;
+};
+
+export type GetDiDsQueryVariables = Exact<{
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  skip?: InputMaybe<Scalars["Int"]["input"]>;
+}>;
+
+export type GetDiDsQuery = {
+  __typename?: "Query";
+  dids?:
+    | Array<{
+        __typename?: "DID";
+        id: string;
+        did: string;
+        active: boolean;
+        controller: string;
+        lastUpdated: string;
+        publicKey?: string | null | undefined;
+        roles: Array<{
+          __typename?: "Role";
+          id: string;
+          role: string;
+          granted: boolean;
+          grantedAt: string;
+        }>;
+      }>
+    | null
+    | undefined;
+};
+
+export type GetVerifierQueryVariables = Exact<{
+  id: Scalars["ID"]["input"];
+}>;
+
+export type GetVerifierQuery = {
+  __typename?: "Query";
+  verifier?:
+    | {
+        __typename?: "Verifier";
+        id: string;
+        address: string;
+        verifierType: string;
+        owner: string;
+        createdAt: string;
+        verifications: Array<
+          | {
+              __typename?: "AgeVerification";
+              id: string;
+              timestamp: string;
+              success: boolean;
+            }
+          | {
+              __typename?: "FhirVerification";
+              id: string;
+              timestamp: string;
+              success: boolean;
+            }
+          | {
+              __typename?: "HashVerification";
+              id: string;
+              timestamp: string;
+              success: boolean;
+            }
+        >;
+      }
+    | null
+    | undefined;
+};
+
+export type GetVerifiersQueryVariables = Exact<{
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  skip?: InputMaybe<Scalars["Int"]["input"]>;
+}>;
+
+export type GetVerifiersQuery = {
+  __typename?: "Query";
+  verifiers?:
+    | Array<{
+        __typename?: "Verifier";
+        id: string;
+        address: string;
+        verifierType: string;
+        owner: string;
+        createdAt: string;
+      }>
+    | null
+    | undefined;
+};

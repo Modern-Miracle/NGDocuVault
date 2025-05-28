@@ -459,6 +459,120 @@ export type GetIssuersQuery = {
   }> | null;
 };
 
+export type GetDidQueryVariables = Exact<{
+  id: Scalars["ID"]["input"];
+}>;
+
+export type GetDidQuery = {
+  __typename?: "Query";
+  did?: {
+    __typename?: "DID";
+    id: string;
+    did: string;
+    active: boolean;
+    controller: string;
+    lastUpdated: string;
+    publicKey?: string | null;
+    document?: string | null;
+    roles: Array<{
+      __typename?: "Role";
+      id: string;
+      role: string;
+      granted: boolean;
+      grantedAt: string;
+      revokedAt?: string | null;
+    }>;
+    credentials: Array<{
+      __typename?: "Credential";
+      id: string;
+      credentialId: string;
+      credentialType: string;
+      issuer: string;
+      issuedAt: string;
+      verified?: boolean | null;
+      verifiedAt?: string | null;
+    }>;
+  } | null;
+};
+
+export type GetDiDsQueryVariables = Exact<{
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  skip?: InputMaybe<Scalars["Int"]["input"]>;
+}>;
+
+export type GetDiDsQuery = {
+  __typename?: "Query";
+  dids?: Array<{
+    __typename?: "DID";
+    id: string;
+    did: string;
+    active: boolean;
+    controller: string;
+    lastUpdated: string;
+    publicKey?: string | null;
+    roles: Array<{
+      __typename?: "Role";
+      id: string;
+      role: string;
+      granted: boolean;
+      grantedAt: string;
+    }>;
+  }> | null;
+};
+
+export type GetVerifierQueryVariables = Exact<{
+  id: Scalars["ID"]["input"];
+}>;
+
+export type GetVerifierQuery = {
+  __typename?: "Query";
+  verifier?: {
+    __typename?: "Verifier";
+    id: string;
+    address: string;
+    verifierType: string;
+    owner: string;
+    createdAt: string;
+    verifications: Array<
+      | {
+          __typename?: "AgeVerification";
+          id: string;
+          timestamp: string;
+          success: boolean;
+        }
+      | {
+          __typename?: "FhirVerification";
+          id: string;
+          timestamp: string;
+          success: boolean;
+        }
+      | {
+          __typename?: "HashVerification";
+          id: string;
+          timestamp: string;
+          success: boolean;
+        }
+    >;
+  } | null;
+};
+
+export type GetVerifiersQueryVariables = Exact<{
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  skip?: InputMaybe<Scalars["Int"]["input"]>;
+}>;
+
+export type GetVerifiersQuery = {
+  __typename?: "Query";
+  verifiers?: Array<{
+    __typename?: "Verifier";
+    id: string;
+    address: string;
+    verifierType: string;
+    owner: string;
+    createdAt: string;
+  }> | null;
+};
+
 export const GetDocumentsDocument = `
     query GetDocuments($first: Int = 5, $skip: Int = 0) {
   documents(first: $first, skip: $skip) {
@@ -569,6 +683,80 @@ export const GetIssuersDocument = `
     address
     isActive
     registeredAt
+  }
+}
+    `;
+export const GetDidDocument = `
+    query GetDID($id: ID!) {
+  did(id: $id) {
+    id
+    did
+    active
+    controller
+    lastUpdated
+    publicKey
+    document
+    roles {
+      id
+      role
+      granted
+      grantedAt
+      revokedAt
+    }
+    credentials {
+      id
+      credentialId
+      credentialType
+      issuer
+      issuedAt
+      verified
+      verifiedAt
+    }
+  }
+}
+    `;
+export const GetDiDsDocument = `
+    query GetDIDs($first: Int = 10, $skip: Int = 0) {
+  dids(first: $first, skip: $skip) {
+    id
+    did
+    active
+    controller
+    lastUpdated
+    publicKey
+    roles {
+      id
+      role
+      granted
+      grantedAt
+    }
+  }
+}
+    `;
+export const GetVerifierDocument = `
+    query GetVerifier($id: ID!) {
+  verifier(id: $id) {
+    id
+    address
+    verifierType
+    owner
+    createdAt
+    verifications {
+      id
+      timestamp
+      success
+    }
+  }
+}
+    `;
+export const GetVerifiersDocument = `
+    query GetVerifiers($first: Int = 10, $skip: Int = 0) {
+  verifiers(first: $first, skip: $skip) {
+    id
+    address
+    verifierType
+    owner
+    createdAt
   }
 }
     `;
@@ -695,6 +883,66 @@ export function getSdk(
             ...wrappedRequestHeaders,
           }),
         "GetIssuers",
+        "query",
+        variables,
+      );
+    },
+    GetDID(
+      variables: GetDidQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<GetDidQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<GetDidQuery>(GetDidDocument, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        "GetDID",
+        "query",
+        variables,
+      );
+    },
+    GetDIDs(
+      variables?: GetDiDsQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<GetDiDsQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<GetDiDsQuery>(GetDiDsDocument, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        "GetDIDs",
+        "query",
+        variables,
+      );
+    },
+    GetVerifier(
+      variables: GetVerifierQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<GetVerifierQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<GetVerifierQuery>(GetVerifierDocument, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        "GetVerifier",
+        "query",
+        variables,
+      );
+    },
+    GetVerifiers(
+      variables?: GetVerifiersQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<GetVerifiersQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<GetVerifiersQuery>(GetVerifiersDocument, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        "GetVerifiers",
         "query",
         variables,
       );

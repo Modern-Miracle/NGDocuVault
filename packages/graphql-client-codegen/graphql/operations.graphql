@@ -110,3 +110,77 @@ query GetIssuers($first: Int = 10, $skip: Int = 0) {
     registeredAt
   }
 }
+
+# Get DID details
+query GetDID($id: ID!) {
+  did(id: $id) {
+    id
+    did
+    active
+    controller
+    lastUpdated
+    publicKey
+    document
+    roles {
+      id
+      role
+      granted
+      grantedAt
+      revokedAt
+    }
+    credentials {
+      id
+      credentialId
+      credentialType
+      issuer
+      issuedAt
+      verified
+      verifiedAt
+    }
+  }
+}
+
+# Get DIDs with pagination
+query GetDIDs($first: Int = 10, $skip: Int = 0) {
+  dids(first: $first, skip: $skip) {
+    id
+    did
+    active
+    controller
+    lastUpdated
+    publicKey
+    roles {
+      id
+      role
+      granted
+      grantedAt
+    }
+  }
+}
+
+# Get verifier details
+query GetVerifier($id: ID!) {
+  verifier(id: $id) {
+    id
+    address
+    verifierType
+    owner
+    createdAt
+    verifications {
+      id
+      timestamp
+      success
+    }
+  }
+}
+
+# Get verifiers with pagination
+query GetVerifiers($first: Int = 10, $skip: Int = 0) {
+  verifiers(first: $first, skip: $skip) {
+    id
+    address
+    verifierType
+    owner
+    createdAt
+  }
+}
