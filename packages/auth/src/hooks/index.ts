@@ -1,4 +1,3 @@
 // Authentication hooks
-export * from './use-siwe-auth';
-export * from './withAuth';
-export * from './use-wallet-auth';
+export * from './useAuth';
+export * from './useSiweAuth';
