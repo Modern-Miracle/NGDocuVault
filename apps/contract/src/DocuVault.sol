@@ -501,6 +501,7 @@ contract DocuVault is Ownable, Pausable, AccessControl {
 
         // Validate sender authorization
         bool isSenderIssuer = didAuth.hasDidRole(didAuth.getDidFromAddress(msg.sender), didAuth.ISSUER_ROLE());
+
         if (!isSenderIssuer && msg.sender != holder) revert DocuVault__NotAuthorized();
 
         // Create document record

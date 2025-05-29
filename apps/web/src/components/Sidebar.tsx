@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import {
   X,
@@ -44,8 +44,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
     return saved ? JSON.parse(saved) : false;
   });
 
-  // Hover state for auto-expand when collapsed
-  const [isHovered, setIsHovered] = useState(false);
+  // Remove hover state - sidebar only expands/collapses via button click
 
   const userRole = {
     isAdmin: !!isAdmin,
@@ -103,8 +102,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
 
   const filteredNavItems = navItems.filter((item) => item.show === undefined || item.show === true);
 
-  // Auto-expand on hover when collapsed (desktop only)
-  const shouldExpand = isCollapsed && isHovered && window.innerWidth >= 1024;
+  // Sidebar only expands via button click, no hover behavior
+  const shouldExpand = false;
 
   // Toggle collapse state
   const toggleCollapse = () => {
@@ -113,12 +112,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
     localStorage.setItem('sidebar-collapsed', JSON.stringify(newState));
   };
 
-  // Reset hover state when mobile menu closes
-  useEffect(() => {
-    if (!isOpen && window.innerWidth < 1024) {
-      setIsHovered(false);
-    }
-  }, [isOpen]);
+  // No hover effects needed since we removed hover behavior
 
   return (
     <TooltipProvider>
@@ -137,8 +131,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
           isOpen ? 'translate-x-0' : '-translate-x-full',
           'lg:translate-x-0'
         )}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
       >
         <div className="flex flex-col h-full">
           {/* Header with Logo and Collapse Button */}
@@ -146,7 +138,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
             <div
               className={cn(
                 'flex items-center transition-all duration-300',
-                isCollapsed && !shouldExpand ? 'justify-center w-full' : 'flex-1'
+                isCollapsed ? 'justify-center w-full' : 'flex-1'
               )}
             >
               <div className="relative">
@@ -156,7 +148,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
                 <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-pulse" />
               </div>
 
-              {(!isCollapsed || shouldExpand) && (
+              {!isCollapsed && (
                 <div className="ml-3 flex flex-col">
                   <h1 className="text-xl font-bold bg-gradient-to-r from-primary to-indigo-600 dark:from-primary/80 dark:to-indigo-400 bg-clip-text text-transparent">
                     DocuVault
@@ -169,12 +161,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
             {/* Desktop Collapse Toggle Button */}
             <button
               className={cn(
-                'hidden lg:flex absolute right-3 top-1/2 -translate-y-1/2',
+                'hidden lg:flex absolute top-1/2 -translate-y-1/2',
                 'w-8 h-8 items-center justify-center rounded-full',
                 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700',
                 'shadow-md hover:shadow-lg transition-all duration-200',
                 'hover:bg-slate-50 dark:hover:bg-slate-700',
-                isCollapsed && !shouldExpand && 'right-1/2 translate-x-1/2'
+                isCollapsed ? 'right-1/2 translate-x-1/2' : 'right-3'
               )}
               onClick={toggleCollapse}
               title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
@@ -207,8 +199,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
                       'group relative flex items-center rounded-xl transition-all duration-200',
                       isActive
                         ? 'bg-gradient-to-r from-primary to-indigo-600 text-white shadow-lg shadow-blue-500/25'
-                        : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800',
-                      isCollapsed && !shouldExpand ? 'px-3 py-3 justify-center' : 'px-4 py-3'
+                        : isCollapsed
+                          ? 'text-slate-700 dark:text-slate-300 hover:bg-primary/20 hover:text-primary dark:hover:bg-slate-800'
+                          : 'text-slate-700 dark:text-slate-300 hover:bg-primary/20 hover:text-primary dark:hover:bg-slate-800',
+                      isCollapsed ? 'w-12 h-12 justify-center mx-auto' : 'px-4 py-3'
                     )
                   }
                   onClick={() => setIsOpen(false)}
@@ -217,13 +211,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
                     <>
                       <item.icon
                         className={cn(
-                          'flex-shrink-0 w-5 h-5 transition-transform duration-200',
+                          'w-5 h-5 transition-transform duration-200 flex-shrink-0',
                           !isActive && 'group-hover:scale-110',
-                          (!isCollapsed || shouldExpand) && 'mr-3'
+                          isCollapsed ? 'text-slate-700 dark:text-slate-300 ' : 'text-slate-700 dark:text-slate-300 '
                         )}
                       />
 
-                      {(!isCollapsed || shouldExpand) && (
+                      {!isCollapsed && (
                         <div className="flex-1 min-w-0">
                           <p className="font-medium truncate">{item.name}</p>
                           {!isActive && item.description && (
@@ -232,7 +226,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
                         </div>
                       )}
 
-                      {item.badge && (!isCollapsed || shouldExpand) && (
+                      {item.badge && !isCollapsed && (
                         <span
                           className={cn(
                             'ml-auto px-2 py-0.5 text-xs font-medium rounded-full',
@@ -246,7 +240,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
                       )}
 
                       {/* Active indicator for collapsed state */}
-                      {isActive && isCollapsed && !shouldExpand && (
+                      {isActive && isCollapsed && (
                         <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-white rounded-r-full" />
                       )}
                     </>
@@ -255,7 +249,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
               );
 
               // Wrap in tooltip when collapsed
-              if (isCollapsed && !shouldExpand) {
+              if (isCollapsed) {
                 return (
                   <Tooltip key={item.name} delayDuration={0}>
                     <TooltipTrigger asChild>{navContent}</TooltipTrigger>
@@ -273,7 +267,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
 
           {/* Footer with Logout */}
           <div className="border-t border-slate-200 dark:border-slate-800 p-4 bg-white dark:bg-slate-900">
-            {!isCollapsed || shouldExpand ? (
+            {!isCollapsed ? (
               <button
                 onClick={async () => {
                   await signOut();
