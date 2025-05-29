@@ -124,7 +124,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
       {/* Sidebar */}
       <aside
         className={cn(
-          'fixed inset-y-0 left-0 z-50 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950',
+          'fixed inset-y-0 left-0 z-50 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950 card-gradient',
           'border-r border-slate-200 dark:border-slate-800 shadow-xl',
           'transition-all duration-300 ease-in-out',
           isCollapsed && !shouldExpand ? 'w-20' : 'w-72',
@@ -213,7 +213,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
                         className={cn(
                           'w-5 h-5 transition-transform duration-200 flex-shrink-0',
                           !isActive && 'group-hover:scale-110',
-                          isCollapsed ? 'text-slate-700 dark:text-slate-300 ' : 'text-slate-700 dark:text-slate-300 '
+                          isCollapsed
+                            ? 'text-slate-700 dark:text-slate-300 '
+                            : 'text-slate-700 dark:text-slate-300 mr-3'
                         )}
                       />
 
