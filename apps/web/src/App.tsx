@@ -16,6 +16,21 @@ import { ProtectedRoute } from './components/auth/ProtectedRoute';
 import AuthPage from './pages/Auth';
 import SignApp from './pages/SignUp';
 
+/**
+ * Main Application Component
+ * 
+ * This is the root component of the Docu Vault application that sets up
+ * the routing structure and layout for the entire application.
+ * 
+ * Features:
+ * - Route-based navigation using React Router
+ * - Protected routes for authenticated users
+ * - Landing page for unauthenticated users  
+ * - Dashboard layout for authenticated sections
+ * - Toast notifications via Sonner
+ * 
+ * @returns {JSX.Element} The main application component with routing
+ */
 function App() {
   return (
     <>
