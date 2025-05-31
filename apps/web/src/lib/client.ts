@@ -1,7 +1,8 @@
 import { createPublicClient, http } from 'viem';
 import { hardhat } from 'viem/chains';
+import { env } from '@/config/env';
 
-const rpcUrl = import.meta.env.VITE_RPC_URL!;
+const rpcUrl = env.VITE_RPC_URL;
 
 export const publicClient = createPublicClient({
   chain: hardhat,

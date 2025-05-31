@@ -19,10 +19,22 @@ export default defineConfig(({ mode }) => ({
         console: 'terminal',
         output: ['terminal', 'console'],
       }),
-  ],
+  ].filter(Boolean),
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
+    },
+  },
+  build: {
+    rollupOptions: {
+      external: [],
+      onwarn(warning, warn) {
+        // Suppress circular dependency warnings and external module warnings
+        if (warning.code === 'CIRCULAR_DEPENDENCY' || warning.code === 'UNRESOLVED_IMPORT') {
+          return;
+        }
+        warn(warning);
+      },
     },
   },
   server: {

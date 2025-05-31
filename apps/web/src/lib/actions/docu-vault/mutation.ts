@@ -36,6 +36,7 @@ import {
 import { ZodError, ZodFormattedError } from 'zod';
 import { CONTRACTS } from '@/config/contract';
 import { parseDocuVaultError } from './error-parser';
+import { env } from '@/config/env';
 
 /**
  * Configuration for the DocuVault contract
@@ -49,8 +50,8 @@ type ContractConfig = {
 // Default configuration - should be overridden in production
 const defaultConfig: ContractConfig = {
   contractAddress: CONTRACTS.DocuVault as `0x${string}`,
-  chainId: Number(import.meta.env.CHAIN_ID || 1),
-  rpcUrl: import.meta.env.VITE_RPC_URL || 'http://localhost:8545',
+  chainId: Number(env.VITE_CHAIN_ID),
+  rpcUrl: env.VITE_RPC_URL,
 };
 
 /**

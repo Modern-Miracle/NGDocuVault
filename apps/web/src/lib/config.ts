@@ -1,13 +1,13 @@
+import { env } from '@/config/env';
+
 /**
  * Configuration file for API endpoints and application settings
  */
 
-// Get environment and determine appropriate base URL
-const isDevelopment = import.meta.env.DEV || import.meta.env.MODE === 'development';
-
 // API base URL with fallbacks for different environments
 // The backend API routes are registered at /api/v1
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (isDevelopment ? '/api/v1' : '/api/v1');
+export const API_BASE_URL = '/api/v1';
+const isDevelopment = import.meta.env.VITE_NODE_ENV === 'development';
 
 // SIWE authentication endpoints
 export const SIWE_ENDPOINTS = {
@@ -33,8 +33,8 @@ export const IPFS_ENDPOINTS = {
 // Network configuration
 export const NETWORK_CONFIG = {
   // Use the local API proxy to avoid CORS issues
-  rpcUrl: isDevelopment ? 'http://localhost:8545' : '/api/proxy/ethereum',
-  walletConnectProjectId: import.meta.env.VITE_WALLETCONNECT_PROJECT_ID || 'c38e2472aec3da732926d49c0b38ae5f',
+  rpcUrl: env.VITE_RPC_URL,
+  walletConnectProjectId: env.VITE_WALLETCONNECT_PROJECT_ID,
 };
 
 // Debug settings

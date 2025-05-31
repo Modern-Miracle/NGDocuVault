@@ -1,5 +1,3 @@
-'use server';
-
 import { createPublicClient, http } from 'viem';
 import { hardhat } from 'viem/chains';
 import { DidAuthABI } from '@docu/abi';
@@ -8,6 +6,7 @@ import { CONTRACTS } from '@/config/contract';
 import { getRoleHash } from './utils';
 import { CONFIRMED_ROLE_NAMES } from '@/utils/roles';
 import { RoleOutput } from '../docu-vault/types';
+import { env } from '@/config/env';
 
 /**
  * Configuration for the DID Auth contract
@@ -20,9 +19,9 @@ type ContractConfig = {
 
 // Default configuration - should be overridden in production
 const defaultConfig: ContractConfig = {
-  contractAddress: (CONTRACTS.DidAuth || '0x5FbDB2315678afecb367f032d93F642f64180aa3') as `0x${string}`,
-  chainId: 31337,
-  rpcUrl: import.meta.env.VITE_RPC_URL || 'http://localhost:8545',
+  contractAddress: CONTRACTS.DidAuth as `0x${string}`,
+  chainId: Number(env.VITE_CHAIN_ID),
+  rpcUrl: env.VITE_RPC_URL,
 };
 
 /**
@@ -248,7 +247,6 @@ export async function getVerifierCredential(): Promise<string> {
     throw new Error(parsedError ? parsedError.message : String(error));
   }
 }
-
 
 /**
  * Get the DID issuer contract address

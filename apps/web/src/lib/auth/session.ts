@@ -1,10 +1,9 @@
-'use server';
-
 import Cookies from 'js-cookie';
 import CryptoJS from 'crypto-js';
+import { env } from '@/config/env';
 
 // Secret key for cookie encryption - store in env variable in production
-const SECRET_KEY = import.meta.env.REACT_APP_COOKIE_SECRET || 'your-secret-key';
+const SECRET_KEY = env.VITE_COOKIE_SECRET!;
 
 // Define a type for the session data
 export interface SessionData {
@@ -40,7 +39,7 @@ export function setSession(session: SessionData): void {
   const encryptedSession = encrypt(JSON.stringify(session));
 
   Cookies.set('siwe-session', encryptedSession, {
-    secure: import.meta.env.VITE_NODE_ENV === 'production',
+    secure: env.VITE_NODE_ENV === 'production',
     sameSite: 'strict',
     expires: 7, // 7 days
     path: '/',

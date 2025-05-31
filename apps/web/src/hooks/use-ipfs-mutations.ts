@@ -10,6 +10,7 @@ import { DOCU_VAULT_KEYS } from '@/hooks/use-docu-vault';
 import { IPFS_ENDPOINTS } from '@/lib/config';
 import { fetchWithErrorHandling } from '@/lib/apiHelper';
 import { logger } from '@/lib/logger';
+import { env } from '@/config/env';
 
 /**
  * Interface for IPFS upload response
@@ -100,9 +101,9 @@ const deleteIPFSData = async (cid: string): Promise<{ success: boolean }> => {
 
 // Default configuration - should be overridden in production
 const defaultConfig = {
-  contractAddress: (import.meta.env.VITE_DOCU_VAULT_CONTRACT_ADDRESS || '0x0') as `0x${string}`,
-  chainId: Number(import.meta.env.VITE_CHAIN_ID || 1),
-  rpcUrl: import.meta.env.VITE_RPC_URL || 'http://127.0.0.1:8545',
+  contractAddress: env.VITE_DOCU_VAULT_CONTRACT_ADDRESS as `0x${string}`,
+  chainId: Number(env.VITE_CHAIN_ID),
+  rpcUrl: env.VITE_RPC_URL,
 };
 
 /**

@@ -9,6 +9,8 @@ import { createPublicClient, http } from 'viem';
 import { mainnet } from 'viem/chains';
 import { DidIssuerABI } from '@docu/abi';
 import { parseDidIssuerError } from './error-parser';
+import { env } from '@/config/env';
+import { CONTRACTS } from '@/config/contract';
 
 /**
  * Configuration for the DID Issuer contract
@@ -21,9 +23,9 @@ type ContractConfig = {
 
 // Default configuration - should be overridden in production
 const defaultConfig: ContractConfig = {
-  contractAddress: (import.meta.env.DID_ISSUER_CONTRACT_ADDRESS || '0x0') as `0x${string}`,
-  chainId: Number(import.meta.env.CHAIN_ID || 1),
-  rpcUrl: import.meta.env.RPC_URL || 'http://127.0.0.1:8545',
+  contractAddress: CONTRACTS.DidIssuer as `0x${string}`,
+  chainId: Number(env.VITE_CHAIN_ID),
+  rpcUrl: env.VITE_RPC_URL,
 };
 
 /**

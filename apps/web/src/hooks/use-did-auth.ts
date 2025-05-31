@@ -1,5 +1,3 @@
-'use client';
-
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import * as didAuthActions from '@/lib/actions/did-auth';
 import { useToast } from './use-toast';
@@ -118,16 +116,6 @@ export function useVerifyCredentialForAction(did?: string, credentialType?: stri
 }
 
 /**
- * Hook to get the consumer credential type
- */
-export function useConsumerCredential() {
-  return useQuery({
-    queryKey: ['didAuth', 'getConsumerCredential'],
-    queryFn: () => didAuthActions.getConsumerCredential(),
-  });
-}
-
-/**
  * Hook to get the producer credential type
  */
 export function useIssuerCredential() {
@@ -144,16 +132,6 @@ export function useVerifierCredential() {
   return useQuery({
     queryKey: ['didAuth', 'getVerifierCredential'],
     queryFn: () => didAuthActions.getVerifierCredential(),
-  });
-}
-
-/**
- * Hook to get the access control contract address
- */
-export function useAccessControlAddress() {
-  return useQuery({
-    queryKey: ['didAuth', 'getAccessControlAddress'],
-    queryFn: () => didAuthActions.getAccessControlAddress(),
   });
 }
 

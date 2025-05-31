@@ -8,6 +8,7 @@ import { hardhat } from 'viem/chains';
 import { DidVerifierABI } from '@docu/abi';
 import { CONTRACTS } from '@/config/contract';
 import { parseDidVerifierError } from './error-parser';
+import { env } from '@/config/env';
 
 /**
  * Configuration for the DID Verifier contract
@@ -21,8 +22,8 @@ type ContractConfig = {
 // Default configuration - should be overridden in production
 const defaultConfig: ContractConfig = {
   contractAddress: CONTRACTS.DidVerifier as `0x${string}`,
-  chainId: Number(import.meta.env.CHAIN_ID || 1),
-  rpcUrl: import.meta.env.VITE_RPC_URL || 'http://localhost:8545',
+  chainId: Number(env.VITE_CHAIN_ID),
+  rpcUrl: env.VITE_RPC_URL,
 };
 
 /**

@@ -65,6 +65,7 @@ import type { TransactionPreparation } from '@/lib/actions/docu-vault/mutation';
 import { CONTRACTS } from '@/config/contract';
 import { DID_AUTH_KEYS } from './use-did-auth';
 import { getAdminRole } from '@/lib/actions/did-auth';
+import { env } from '@/config/env';
 
 /**
  * Configuration for the DID Registry contract
@@ -78,8 +79,8 @@ type ContractConfig = {
 // Default configuration
 const defaultConfig: ContractConfig = {
   contractAddress: CONTRACTS.DocuVault as `0x${string}`,
-  chainId: parseInt(import.meta.env.VITE_CHAIN_ID || '31337'),
-  rpcUrl: import.meta.env.VITE_RPC_URL || 'http://localhost:8545',
+  chainId: parseInt(env.VITE_CHAIN_ID),
+  rpcUrl: env.VITE_RPC_URL,
 };
 
 /**

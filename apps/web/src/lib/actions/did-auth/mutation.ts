@@ -1,8 +1,7 @@
-'use server';
-
 import { DidAuthABI } from '@docu/abi';
 import { CONTRACTS } from '@/config/contract';
 import { parseDidAuthError } from './error-parser';
+import { env } from '@/config/env';
 
 /**
  * Configuration for the DID Auth contract
@@ -16,8 +15,8 @@ type ContractConfig = {
 // Default configuration - should be overridden in production
 const defaultConfig: ContractConfig = {
   contractAddress: CONTRACTS.DidAuth as `0x${string}`,
-  chainId: 31337,
-  rpcUrl: import.meta.env.VITE_RPC_URL || 'http://localhost:8545',
+  chainId: Number(env.VITE_CHAIN_ID),
+  rpcUrl: env.VITE_RPC_URL,
 };
 
 // console.log(CONTRACTS.DidAuth);

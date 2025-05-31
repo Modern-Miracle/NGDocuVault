@@ -6,6 +6,7 @@ import { DocuVaultABI } from '@docu/abi';
 import { useMemo, useEffect, useCallback, useState } from 'react';
 import { AsymmetricEncryptOutput, decryptWithPrivateKey } from '@/lib/asymmetric';
 import { logger } from '@/lib/logger';
+import { env } from '@/config/env';
 import {
   useDocumentInfo,
   useHolderDocuments,
@@ -19,9 +20,9 @@ import { fetchWithErrorHandling } from '@/lib/apiHelper';
 
 // Default configuration - should be overridden in production
 const defaultConfig = {
-  contractAddress: (import.meta.env.VITE_DOCU_VAULT_CONTRACT_ADDRESS || '0x0') as `0x${string}`,
-  chainId: Number(import.meta.env.VITE_CHAIN_ID || 31337),
-  rpcUrl: import.meta.env.VITE_RPC_URL || 'http://127.0.0.1:8545',
+  contractAddress: env.VITE_DOCU_VAULT_CONTRACT_ADDRESS as `0x${string}`,
+  chainId: Number(env.VITE_CHAIN_ID),
+  rpcUrl: env.VITE_RPC_URL,
 };
 
 /**

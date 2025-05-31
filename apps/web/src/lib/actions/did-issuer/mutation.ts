@@ -1,5 +1,3 @@
-'use server';
-
 /**
  * @file DID Issuer Mutation Actions
  * @description This file contains all state-changing functions from the DID Issuer ABI.
@@ -11,6 +9,7 @@ import { privateKeyToAccount } from 'viem/accounts';
 import { DidIssuerABI } from '@docu/abi';
 import { CONTRACTS } from '@/config/contract';
 import { parseDidIssuerError } from './error-parser';
+import { env } from '@/config/env';
 
 /**
  * Configuration for the DID Issuer contract
@@ -24,8 +23,8 @@ type ContractConfig = {
 // Default configuration - should be overridden in production
 const defaultConfig: ContractConfig = {
   contractAddress: CONTRACTS.DidIssuer as `0x${string}`,
-  chainId: Number(import.meta.env.CHAIN_ID || 1),
-  rpcUrl: import.meta.env.RPC_URL || 'http://127.0.0.1:8545',
+  chainId: Number(env.VITE_CHAIN_ID),
+  rpcUrl: env.VITE_RPC_URL,
 };
 
 /**

@@ -1,0 +1,78 @@
+name: Azure Static Web Apps CI/CD
+
+on:
+  push:
+    branches:
+      - main
+      - feature/contract-deployment
+    paths:
+      - 'apps/web/**'
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - main
+    paths:
+      - 'apps/web/**'
+
+jobs:
+  build_and_deploy_job:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    runs-on: ubuntu-latest
+    name: Build and Deploy Job
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+          lfs: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build Web App
+        run: pnpm build --filter=docu-vault-web
+        env:
+          VITE_NODE_ENV=production 
+          VITE_API_BASE_URL: https://docu-vault-api.azurewebsites.net/api/v1
+          VITE_SEPOLIA_CHAIN_ID: 11155111
+          VITE_COOKIE_SECRET: ${{ secrets.VITE_COOKIE_SECRET }}
+          VITE_SEPOLIA_RPC_URL: ${{ secrets.VITE_SEPOLIA_RPC_URL }}
+          VITE_SEPOLIA_DOCU_VAULT_CONTRACT_ADDRESS: 0x8abaE3CEA79090BF9EfD096B0975241F1619FAb8
+          VITE_SEPOLIA_DID_REGISTRY_CONTRACT_ADDRESS: 0x3922d5521B7376efc1CADD2761cC4dFBA45DF446
+          VITE_SEPOLIA_DID_AUTH_CONTRACT_ADDRESS: 0x892f57d997c5e9f5C5317704c996f7308833f95c
+          VITE_SEPOLIA_DID_ISSUER_CONTRACT_ADDRESS: 0xBD9be795602cF5719de20D5cbc2036fB80e94821
+          VITE_SEPOLIA_DID_VERIFIER_CONTRACT_ADDRESS: 0x309076d0d9E5206574Ab84c5805D535758D67570
+          VITE_WALLETCONNECT_PROJECT_ID: ${{ secrets.VITE_WALLETCONNECT_PROJECT_ID }}
+
+      - name: Build And Deploy
+        id: builddeploy
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: 'upload'
+          app_location: '/apps/web'
+          app_build_command: "echo 'Already built'"
+          output_location: 'dist'
+          skip_app_build: true
+
+  close_pull_request_job:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    name: Close Pull Request Job
+    steps:
+      - name: Close Pull Request
+        id: closepullrequest
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          action: 'close'

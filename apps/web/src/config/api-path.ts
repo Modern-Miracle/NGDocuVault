@@ -1,1 +1,3 @@
-export const BASE_API_URL = import.meta.env.VITE_BASE_API_URL;
+import { env } from './env';
+
+export const BASE_API_URL = env.VITE_API_BASE_URL;

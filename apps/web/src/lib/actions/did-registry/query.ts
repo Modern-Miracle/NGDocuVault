@@ -1,10 +1,9 @@
-'use server';
-
 import { createPublicClient, http } from 'viem';
 import { hardhat } from 'viem/chains';
 import { DidRegistryABI } from '@docu/abi';
 import { CONTRACTS } from '@/config/contract';
 import { parseDidRegistryError } from './error-parser';
+import { env } from '@/config/env';
 
 /**
  * Configuration for the DID Registry contract
@@ -18,8 +17,8 @@ type ContractConfig = {
 // Default configuration - should be overridden in production
 const defaultConfig: ContractConfig = {
   contractAddress: CONTRACTS.DidRegistry as `0x${string}`,
-  chainId: 31337,
-  rpcUrl: import.meta.env.VITE_RPC_URL || 'http://localhost:8545',
+  chainId: Number(env.VITE_CHAIN_ID),
+  rpcUrl: env.VITE_RPC_URL,
 };
 
 /**

@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import Cookies from 'js-cookie';
 import { SiweMessage } from 'siwe';
+import { isProd } from '@/config/env';
 
 // Cookie configuration
 const COOKIE_NAME = 'siwe-auth-state';
@@ -96,7 +97,7 @@ export const useAuthStore = create<AuthState & AuthActions>()(
         setItem: (name, value) => {
           Cookies.set(name, JSON.stringify(value), {
             expires: COOKIE_EXPIRATION_DAYS,
-            secure: import.meta.env.NODE_ENV === 'production',
+            secure: isProd,
             sameSite: 'strict',
           });
         },
