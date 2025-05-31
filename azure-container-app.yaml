@@ -1,0 +1,62 @@
+apiVersion: 2023-05-01
+location: East US
+name: docu-vault-app
+properties:
+  environmentId: /subscriptions/{subscription-id}/resourceGroups/{resource-group}/providers/Microsoft.App/managedEnvironments/{environment-name}
+  configuration:
+    activeRevisionsMode: Single
+    ingress:
+      external: true
+      targetPort: 80
+      traffic:
+        - weight: 100
+          latestRevision: true
+    secrets:
+      - name: database-connection-string
+        value: '{database-connection-string}'
+      - name: jwt-secret
+        value: '{jwt-secret}'
+      - name: azure-keyvault-client-id
+        value: '{keyvault-client-id}'
+      - name: azure-keyvault-client-secret
+        value: '{keyvault-client-secret}'
+      - name: azure-keyvault-tenant-id
+        value: '{tenant-id}'
+    registries:
+      - server: '{acr-name}.azurecr.io'
+        username: '{acr-username}'
+        passwordSecretRef: acr-password
+  template:
+    containers:
+      - image: '{acr-name}.azurecr.io/docu-vault:latest'
+        name: docu-vault
+        resources:
+          cpu: 1.0
+          memory: 2Gi
+        env:
+          - name: NODE_ENV
+            value: 'production'
+          - name: PORT
+            value: '3000'
+          - name: DATABASE_URL
+            secretRef: database-connection-string
+          - name: JWT_SECRET
+            secretRef: jwt-secret
+          - name: AZURE_CLIENT_ID
+            secretRef: azure-keyvault-client-id
+          - name: AZURE_CLIENT_SECRET
+            secretRef: azure-keyvault-client-secret
+          - name: AZURE_TENANT_ID
+            secretRef: azure-keyvault-tenant-id
+          - name: AZURE_KEY_VAULT_URL
+            value: 'https://{keyvault-name}.vault.azure.net/'
+          - name: CORS_ORIGIN
+            value: 'https://{app-url}'
+    scale:
+      minReplicas: 1
+      maxReplicas: 10
+      rules:
+        - name: http-scaling
+          http:
+            metadata:
+              concurrentRequests: 100
