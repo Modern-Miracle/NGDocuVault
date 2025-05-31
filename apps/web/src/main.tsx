@@ -8,20 +8,20 @@ import './index.css';
 
 /**
  * Application Entry Point
- * 
+ *
  * This file bootstraps the React application with all necessary providers
  * and configuration. It sets up the root rendering context for the entire
  * Docu Vault application.
- * 
+ *
  * Setup includes:
  * - React Strict Mode for development warnings
  * - Browser Router for client-side routing
  * - Authentication Provider for user state management
  * - Store initialization for persisted state
- * 
+ *
  * The application is rendered into the root DOM element and wrapped with
  * all necessary context providers to ensure proper functionality across
- * all components.
+ * all components..
  */
 
 // Initialize the auth store before rendering the app
