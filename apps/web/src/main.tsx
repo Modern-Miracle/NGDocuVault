@@ -7,8 +7,7 @@ import { initializeStore } from './lib/store/initialize-store';
 import './index.css';
 
 /**
- * Application Entry Point
- *
+ * Application Entry Point *
  * This file bootstraps the React application with all necessary providers
  * and configuration. It sets up the root rendering context for the entire
  * Docu Vault application.
