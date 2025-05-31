@@ -1,5 +1,8 @@
 import { env } from './env';
 
+/**
+ * This file is part of the DocuSign project.
+ */
 export const CONTRACTS: { [key: string]: string } = {
   DidRegistry: env.VITE_DID_REGISTRY_CONTRACT_ADDRESS!,
   DidIssuer: env.VITE_DID_ISSUER_CONTRACT_ADDRESS!,
