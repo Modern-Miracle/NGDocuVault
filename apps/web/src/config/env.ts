@@ -1,3 +1,7 @@
+/**
+ * This file is part of the DocuSign project.
+ */
+
 type Env = {
   VITE_NODE_ENV: string;
   VITE_CHAIN_ID: string;
