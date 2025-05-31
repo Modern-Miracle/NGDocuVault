@@ -41,7 +41,7 @@ jobs:
       - name: Build Web App
         run: pnpm build --filter=docu-vault-web
         env:
-          VITE_NODE_ENV=production 
+          VITE_NODE_ENV: production 
           VITE_API_BASE_URL: https://docu-vault-api.azurewebsites.net/api/v1
           VITE_SEPOLIA_CHAIN_ID: 11155111
           VITE_COOKIE_SECRET: ${{ secrets.VITE_COOKIE_SECRET }}
