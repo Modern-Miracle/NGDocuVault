@@ -14,7 +14,7 @@ NGDocuVault is an open-source decentralized document management platform develop
 
 - **[Hora e.V.](https://hora-ev.eu)** - Main development organization
 - **[Modern Miracle](https://modern-miracle.com)** - Technology collaboration partner
-- **NGI Sargasso** - Funding and support through the Next Generation Internet initiative
+- **[NGI Sargasso](https://ngisargasso.eu)** - Funding and support through the Next Generation Internet initiative
 
 ### Key Features
 
