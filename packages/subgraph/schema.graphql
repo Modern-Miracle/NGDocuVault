@@ -1,0 +1,176 @@
+type Issuer @entity(immutable: false) {
+  id: ID!
+  address: Bytes!
+  isActive: Boolean!
+  registeredAt: BigInt!
+  documents: [Document!]! @derivedFrom(field: "issuer")
+  activatedAt: BigInt
+  deactivatedAt: BigInt
+}
+
+enum DocumentType {
+  GENERIC
+  BIRTH_CERTIFICATE
+  DEATH_CERTIFICATE
+  MARRIAGE_CERTIFICATE
+  ID_CARD
+  PASSPORT
+  OTHER
+}
+
+enum ConsentStatus {
+  PENDING
+  GRANTED
+  REJECTED
+}
+
+type Document @entity(immutable: false) {
+  id: ID!
+  documentId: Bytes!
+  issuer: Issuer!
+  holder: Holder!
+  issuanceDate: BigInt!
+  expirationDate: BigInt!
+  isVerified: Boolean!
+  documentType: DocumentType!
+  verifiedAt: BigInt
+  verifiedBy: Bytes
+  shareRequests: [ShareRequest!]! @derivedFrom(field: "document")
+  verificationRequests: [VerificationRequest!]! @derivedFrom(field: "document")
+  isExpired: Boolean!
+  registeredAt: BigInt!
+  updates: [Document!]! @derivedFrom(field: "previousVersion")
+  previousVersion: Document
+}
+
+type Holder @entity(immutable: false) {
+  id: ID!
+  address: Bytes!
+  documents: [Document!]! @derivedFrom(field: "holder")
+  shareRequests: [ShareRequest!]! @derivedFrom(field: "holder")
+  verificationRequests: [VerificationRequest!]! @derivedFrom(field: "holder")
+}
+
+type ShareRequest @entity(immutable: false) {
+  id: ID!
+  document: Document!
+  requester: Bytes!
+  holder: Holder!
+  status: ConsentStatus!
+  requestedAt: BigInt!
+  validUntil: BigInt
+  grantedAt: BigInt
+  revokedAt: BigInt
+}
+
+type VerificationRequest @entity(immutable: false) {
+  id: ID!
+  document: Document!
+  holder: Holder!
+  requestedAt: BigInt!
+  verified: Boolean!
+  verifiedAt: BigInt
+}
+
+# DID-related entities
+type DID @entity(immutable: false) {
+  id: ID!
+  did: String!
+  controller: Bytes!
+  active: Boolean!
+  lastUpdated: BigInt!
+  publicKey: String
+  document: String
+  credentials: [Credential!]! @derivedFrom(field: "subject")
+  roles: [Role!]! @derivedFrom(field: "did")
+}
+
+type Credential @entity(immutable: false) {
+  id: ID!
+  credentialType: String!
+  subject: DID!
+  credentialId: Bytes!
+  issuedAt: BigInt!
+  issuer: Bytes!
+  verified: Boolean
+  verifiedAt: BigInt
+}
+
+type Role @entity(immutable: false) {
+  id: ID!
+  did: DID!
+  role: Bytes!
+  granted: Boolean!
+  grantedAt: BigInt!
+  revokedAt: BigInt
+}
+
+type TrustedIssuer @entity(immutable: false) {
+  id: ID!
+  credentialType: String!
+  issuer: Bytes!
+  trusted: Boolean!
+  updatedAt: BigInt!
+}
+
+type Authentication @entity(immutable: false) {
+  id: ID!
+  did: DID!
+  role: Bytes!
+  timestamp: BigInt!
+  successful: Boolean!
+}
+
+# Link DID to Holder entity
+type DidHolder @entity(immutable: false) {
+  id: ID!
+  did: DID!
+  holder: Holder!
+}
+
+# Verifier-related entities
+type Verifier @entity(immutable: false) {
+  id: ID!
+  address: Bytes!
+  verifierType: String!
+  owner: Bytes!
+  createdAt: BigInt!
+  verifications: [Verification!]! @derivedFrom(field: "verifier")
+}
+
+interface Verification {
+  id: ID!
+  verifier: Verifier!
+  timestamp: BigInt!
+  success: Boolean!
+}
+
+type AgeVerification implements Verification @entity(immutable: false) {
+  id: ID!
+  verifier: Verifier!
+  timestamp: BigInt!
+  success: Boolean!
+  pubSignals: [BigInt!]!
+  caller: Bytes!
+  documentId: Bytes
+}
+
+type FhirVerification implements Verification @entity(immutable: false) {
+  id: ID!
+  verifier: Verifier!
+  timestamp: BigInt!
+  success: Boolean!
+  pubSignals: [BigInt!]!
+  caller: Bytes!
+  documentId: Bytes
+}
+
+type HashVerification implements Verification @entity(immutable: false) {
+  id: ID!
+  verifier: Verifier!
+  timestamp: BigInt!
+  success: Boolean!
+  pubSignals: [BigInt!]!
+  caller: Bytes!
+  documentId: Bytes
+}

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "forceConsistentCasingInFileNames": true,
+    "strictNullChecks": false,
+    "outDir": "dist",
+    "target": "es2020",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true
+  },
+
+  "include": ["./scripts", "./src", "./test", "deploy/00_deploy_all.ts", "deploy", "deploy"],
+  "files": ["./hardhat.config.ts"]
+}

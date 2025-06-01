@@ -1,0 +1,114 @@
+# Graph Node Configuration File
+# Based on official docs: https://github.com/graphprotocol/graph-node/blob/master/docs/config.md
+
+################################
+# PostgreSQL Database Settings #
+################################
+[store]
+[store.primary]
+connection = "postgresql://graph-node:let-me-in@postgres:5432/graph-node"
+pool_size = 10
+
+# For high-load setups, you can configure read replicas
+# [store.primary.replicas.replica1]
+# connection = "postgresql://postgres:postgres@replica1:5432/graph-node"
+# weight = 1
+
+######################
+# Ethereum Providers #
+######################
+[chains]
+ingestor = "default"
+
+[chains.hardhat]
+shard = "primary"
+provider = [
+  { label = "hardhat", url = "http://172.17.0.1:8545", features = ["archive"] }
+]
+polling_interval = 1000
+
+# Add other networks as needed
+# [chains.sepolia]
+# shard = "primary"
+# provider = [
+#   { label = "sepolia", url = "http://localhost:8546", features = [] }
+# ]
+
+#################################
+# Query Planning Cache Settings #
+#################################
+[supergraph]
+# Query planning cache configuration
+[supergraph.query_planning.cache]
+# In-memory cache configuration (LRU)
+[supergraph.query_planning.cache.in_memory]
+limit = 10000  # Maximum number of cached query plans
+
+# Distributed Redis cache configuration
+[supergraph.query_planning.cache.redis]
+# Redis connection URL(s)
+urls = ["redis://localhost:6379"]
+# Optional Redis authentication (if required)
+# username = "graph-node"
+# password = "password"
+# Redis connection timeout
+timeout = "2s"
+# Default TTL for cache entries (30 days)
+ttl = "720h"
+# Namespace to avoid key collisions if Redis is used for other purposes
+namespace = "graphnode:queryplans"
+
+#######################################
+# Automatic Persisted Queries Caching #
+#######################################
+[apq]
+enabled = true
+
+# Router APQ cache configuration
+[apq.router.cache]
+[apq.router.cache.in_memory]
+limit = 10000  # Maximum number of APQ entries
+
+# Distributed Redis cache for APQ
+[apq.router.cache.redis]
+urls = ["redis://localhost:6379"]
+# Optional Redis authentication (if required)
+# username = "graph-node" 
+# password = "password"
+timeout = "2s"
+ttl = "720h"
+namespace = "graphnode:apq"
+
+#######################
+# Node Configuration #
+#######################
+[general]
+# GraphQL metrics collection
+query_stats.max_complexity = 100  # Max complexity of queries to be logged
+query_stats.interval = "28d"      # Log queries spanning this time window
+
+# Configure dedicated query nodes (if needed)
+# query = "query_node_.*"
+
+#########################
+# Deployment Rules     #
+#########################
+[deployment]
+# Default rule for all Subgraphs 
+[[deployment.rule]]
+shard = "primary"
+indexers = [ "default" ]
+
+# Rules for high-priority Subgraphs (if needed)
+# [[deployment.rule]]
+# match = { name = "(important|highload)/.*" }
+# shard = "primary"
+# indexers = ["index_node_vip_1", "index_node_vip_2"] 
+
+[ethereum]
+reorg_threshold = 0
+genesis_block_number = 1
+block_batch_size = 1
+max_block_range_size = 10
+target_triggers_per_block_range = 10
+timeout = 120 

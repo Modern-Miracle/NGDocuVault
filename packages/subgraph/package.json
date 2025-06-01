@@ -1,0 +1,48 @@
+{
+  "name": "docu-subgraph",
+  "version": "0.1.0",
+  "description": "Subgraph for DocuVault smart contract",
+  "scripts": {
+    "codegen": "graph codegen",
+    "build": "graph build",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 docuvault",
+    "create-local": "graph create --node http://localhost:8020/ docuvault",
+    "remove-local": "graph remove --node http://localhost:8020/ docuvault",
+    "update-address": "ts-node scripts/update-contract-address.ts",
+    "start-local": "docker compose up -d",
+    "stop-local": "docker compose down",
+    "logs": "docker compose logs -f graph-node",
+    "full-deploy": "pnpm codegen && pnpm build && pnpm create-local && pnpm deploy-local",
+    "build:ts": "tsc || exit 0",
+    "build:tests": "tsc -p tests/tsconfig.json && cp -r tests/queries dist/tests/",
+    "lint": "eslint 'src/**/*.ts' 'scripts/**/*.ts'",
+    "lint:fix": "eslint 'src/**/*.ts' 'scripts/**/*.ts' --fix",
+    "test:queries": "pnpm build:tests && node dist/tests/run-test-queries.js",
+    "test:verify": "pnpm build:tests && node dist/tests/verify-entity-relationships.js",
+    "deploy-test": "bash scripts/deploy-local.sh",
+    "prepare-prod": "bash scripts/prepare-production.sh",
+    "test-queries": "npx ts-node dist/tests/query-tests.js",
+    "test:unified": "npx ts-node dist/tests/unified-query-tester.js",
+    "apply-cache": "node scripts/apply-cache-config.js",
+    "setup-linux": "bash scripts/setup.sh",
+    "sync-schema": "node scripts/sync-schema.js"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "^0.97.0",
+    "@graphprotocol/graph-ts": "^0.38.0",
+    "chalk": "^5.4.1",
+    "dotenv": "^16.5.0",
+    "graphql": "^16.10.0",
+    "graphql-request": "^7.1.2",
+    "js-yaml": "^4.1.0"
+  },
+  "devDependencies": {
+    "@docu/eslint-config": "workspace:*",
+    "@docu/typescript-config": "workspace:*",
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^20.11.19",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2"
+  },
+  "type": "module"
+}

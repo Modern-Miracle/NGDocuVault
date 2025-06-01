@@ -1,0 +1,22 @@
+# Extensions for GraphQL types
+# Note: These extensions add parameters to fields defined in schema.graphql
+# They are needed for client-side pagination and filtering
+
+# Add pagination parameters to fields
+extend type Issuer {
+  documents(first: Int, skip: Int): [Document!]!
+}
+
+extend type Holder {
+  documents(first: Int, skip: Int): [Document!]!
+  shareRequests(first: Int, skip: Int): [ShareRequest!]!
+  verificationRequests(first: Int, skip: Int): [VerificationRequest!]!
+}
+
+# Additional query fields for aggregation
+extend type Query {
+  # Aggregation queries
+  documentsCount: Int
+  issuersCount: Int
+  holdersCount: Int
+}

@@ -1,0 +1,57 @@
+schema:
+  - graphql/schema.graphql
+  - graphql/custom-scalars.graphql
+  - graphql/root-types.graphql
+  - graphql/schema-extensions.graphql
+
+documents:
+  - graphql/operations.graphql
+
+generates:
+  # Generate TypeScript types for operations
+  src/generated/graphql.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+    config:
+      avoidOptionals: false
+      maybeValue: T | null | undefined
+      scalars:
+        BigInt: string
+        Bytes: string
+        DateTime: Date
+
+  # Generate GraphQL Request SDK
+  src/generated/graphql-request.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-graphql-request
+    config:
+      documentMode: string
+      scalars:
+        BigInt: string
+        Bytes: string
+        DateTime: Date
+
+  # Generate React Query hooks
+  src/generated/react-query.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-query
+    config:
+      fetcher: graphql-request
+      exposeQueryKeys: true
+      exposeDocument: true
+      exposeFetcher: true
+      scalars:
+        BigInt: string
+        Bytes: string
+        DateTime: Date
+      reactQueryVersion: 5
+      legacyMode: false
+
+hooks:
+  afterAllFileWrite:
+    - prettier --write

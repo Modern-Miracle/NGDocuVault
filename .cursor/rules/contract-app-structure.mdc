@@ -1,0 +1,63 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Smart Contract Application Structure
+
+The smart contract application contains blockchain contracts, deployment scripts, and testing infrastructure using Hardhat.
+
+## Core Structure
+
+- **[apps/contract/src/](mdc:apps/contract/src/)**: Smart contract source code
+  - Contains Solidity (.sol) contract files organized by functionality
+
+- **[apps/contract/scripts/](mdc:apps/contract/scripts/)**: Utility scripts for contract interaction
+  - Scripts for interacting with deployed contracts
+  - Utility functions for contract operations
+
+- **[apps/contract/deploy/](mdc:apps/contract/deploy/)**: Deployment scripts
+  - Hardhat deployment scripts for different environments
+  - Configuration for contract deployment
+
+- **[apps/contract/test/](mdc:apps/contract/test/)**: Contract test files
+  - Unit tests for smart contracts
+  - Integration tests for contract interactions
+
+- **[apps/contract/types/](mdc:apps/contract/types/)**: TypeScript type definitions
+  - Custom type definitions for contract interactions
+
+- **[apps/contract/circuits/](mdc:apps/contract/circuits/)**: Zero-knowledge proof circuits (if applicable)
+  - Circuit definitions for zero-knowledge applications
+
+## Generated Directories
+
+- **[apps/contract/artifacts/](mdc:apps/contract/artifacts/)**: Compiled contract artifacts
+- **[apps/contract/cache/](mdc:apps/contract/cache/)**: Hardhat cache
+- **[apps/contract/deployments/](mdc:apps/contract/deployments/)**: Deployment information
+- **[apps/contract/typechain-types/](mdc:apps/contract/typechain-types/)**: Generated TypeScript types
+
+## Configuration Files
+
+- **[apps/contract/hardhat.config.ts](mdc:apps/contract/hardhat.config.ts)**: Hardhat configuration
+- **[apps/contract/package.json](mdc:apps/contract/package.json)**: Package dependencies and scripts
+- **[apps/contract/tsconfig.json](mdc:apps/contract/tsconfig.json)**: TypeScript configuration
+- **[apps/contract/.solcover.js](mdc:apps/contract/.solcover.js)**: Solidity coverage configuration
+
+## Key Features
+
+- Smart contract development with Solidity
+- Automated testing infrastructure
+- Deployment scripts for different environments
+- TypeScript integration with TypeChain
+- Gas optimization
+- Coverage reporting for contract tests
+
+## Development Guidelines
+
+- Write comprehensive tests for all contracts
+- Document contract functions and behavior
+- Follow security best practices for smart contract development
+- Use TypeScript for deployment scripts and contract interactions
+- Perform gas optimization where possible
+- Maintain clear separation between contract concerns

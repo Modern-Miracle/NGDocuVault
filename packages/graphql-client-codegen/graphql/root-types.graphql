@@ -1,0 +1,32 @@
+type Query {
+  # Document queries
+  document(id: ID!): Document
+  documents(first: Int, skip: Int, where: DocumentFilterInput): [Document!]
+
+  # Issuer queries
+  issuer(id: ID!): Issuer
+  issuers(first: Int, skip: Int): [Issuer!]
+
+  # Holder queries
+  holder(id: ID!): Holder
+  holders(first: Int, skip: Int): [Holder!]
+
+  # DID queries
+  did(id: ID!): DID
+  dids(first: Int, skip: Int): [DID!]
+
+  # Verifier queries
+  verifier(id: ID!): Verifier
+  verifiers(first: Int, skip: Int): [Verifier!]
+}
+
+# Input type for document filtering
+input DocumentFilterInput {
+  documentType: DocumentType
+  isVerified: Boolean
+}
+
+type Mutation {
+  # Placeholder mutation
+  ping: String
+}

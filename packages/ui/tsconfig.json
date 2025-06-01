@@ -1,0 +1,11 @@
+{
+  "extends": "@docu/typescript-config/react-library.json",
+  "compilerOptions": {
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "@docu/ui/*": ["./src/*"]
+    }
+  },
+  "exclude": ["node_modules", "dist"]
+}

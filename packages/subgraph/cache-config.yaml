@@ -1,0 +1,145 @@
+# DocuVault Graph Node Cache Configuration
+# This file is used to generate environment variables and config settings for Graph Node
+# It maps to the caching capabilities in Graph Node and is processed by apply-cache-config.js
+
+# Global cache settings - used to derive environment variables
+global:
+  ttl: 3600 # Default cache TTL in seconds (1 hour)
+  maxSize: 1000 # Default maximum cache size
+
+# Query caching priorities and settings
+# These settings help determine which queries require special attention
+# They influence the generated environment variables and config.toml settings
+queries:
+  # Document queries - user-facing with high frequency
+  GetHolderDocuments:
+    ttl: 300 # 5 minutes
+    maxSize: 100
+    priority: high
+
+  GetDocumentDetails:
+    ttl: 600 # 10 minutes
+    maxSize: 250
+    priority: high
+
+  GetVerificationStatus:
+    ttl: 180 # 3 minutes
+    maxSize: 100
+    priority: medium
+
+  GetDocumentsByType:
+    ttl: 1800 # 30 minutes
+    maxSize: 50
+    priority: medium
+
+  GetPendingShareRequests:
+    ttl: 60 # 1 minute (needs to be very fresh)
+    maxSize: 20
+    priority: high
+
+  GetSharedDocumentsHistory:
+    ttl: 1800 # 30 minutes
+    maxSize: 30
+    priority: low
+
+  # Analytics queries - can be cached longer as they're less time-sensitive
+  GetDocumentStatsByType:
+    ttl: 3600 # 1 hour
+    maxSize: 10
+    priority: low
+
+  GetVerificationStats:
+    ttl: 3600 # 1 hour
+    maxSize: 10
+    priority: low
+
+  GetIssuerStats:
+    ttl: 7200 # 2 hours
+    maxSize: 10
+    priority: low
+
+  GetDocumentsInTimePeriod:
+    ttl: 3600 # 1 hour
+    maxSize: 20
+    priority: medium
+
+  GetTopIssuers:
+    ttl: 7200 # 2 hours
+    maxSize: 10
+    priority: low
+
+  GetRecentActivities:
+    ttl: 600 # 10 minutes
+    maxSize: 20
+    priority: medium
+
+  GetVerificationRequestStats:
+    ttl: 1800 # 30 minutes
+    maxSize: 10
+    priority: low
+
+  GetShareRequestStats:
+    ttl: 1800 # 30 minutes
+    maxSize: 10
+    priority: low
+
+# Entity patterns that would benefit from query optimization
+# These help with manual query optimization if needed
+entities:
+  Document:
+    patterns:
+      - 'documents(first: $first, skip: $skip)'
+      - 'document(id: $id)'
+      - 'documents(where: { documentType: $type })'
+      - 'documents(where: { isVerified: $isVerified })'
+      - 'documents(where: { holder: $holderId })'
+
+  Holder:
+    patterns:
+      - 'holder(id: $holderId)'
+      - 'holders(first: $first, skip: $skip)'
+
+  Issuer:
+    patterns:
+      - 'issuer(id: $issuerId)'
+      - 'issuers(where: { isActive: $isActive })'
+
+  DID:
+    patterns:
+      - 'did(id: $didId)'
+      - 'dids(where: { active: $active })'
+
+# Key events that should trigger cache invalidation
+# These can be used for manual cache management or insights development
+invalidation_events:
+  - event: DocumentRegistered
+    entities: [Document, Holder]
+    queries: [GetHolderDocuments, GetDocumentsByType, GetDocumentStatsByType, GetRecentActivities]
+
+  - event: DocumentVerified
+    entities: [Document]
+    queries: [GetVerificationStatus, GetDocumentDetails, GetVerificationStats]
+
+  - event: DocumentShared
+    entities: [ShareRequest]
+    queries: [GetPendingShareRequests, GetSharedDocumentsHistory, GetShareRequestStats]
+
+  - event: ShareRequested
+    entities: [ShareRequest]
+    queries: [GetPendingShareRequests, GetShareRequestStats]
+
+  - event: ConsentGranted
+    entities: [ShareRequest]
+    queries: [GetPendingShareRequests, GetSharedDocumentsHistory, GetShareRequestStats]
+
+  - event: ConsentRevoked
+    entities: [ShareRequest]
+    queries: [GetSharedDocumentsHistory, GetShareRequestStats]
+
+  - event: CredentialIssued
+    entities: [Credential, DID]
+    queries: [GetDocumentDetails]
+
+  - event: CredentialVerified
+    entities: [Credential]
+    queries: [GetDocumentDetails]

@@ -1,0 +1,41 @@
+schema:
+  - graphql/schema.graphql
+  - graphql/custom-scalars.graphql
+  - graphql/root-types.graphql
+  - graphql/schema-extensions.graphql
+
+documents: null
+
+generates:
+  src/generated/graphql.ts:
+    plugins:
+      - typescript
+      - typescript-resolvers
+    config:
+      maybeValue: T | null | undefined
+      avoidOptionals: false
+      contextType: '../types#GraphQLContext'
+      mappers:
+        Document: '../types#DocumentModel'
+        Issuer: '../types#IssuerModel'
+        Holder: '../types#HolderModel'
+        ShareRequest: '../types#ShareRequestModel'
+        VerificationRequest: '../types#VerificationRequestModel'
+        DID: '../types#DIDModel'
+        Verifier: '../types#VerifierModel'
+      scalars:
+        BigInt: string
+        Bytes: string
+        DateTime: Date
+      allowParentTypeOverride: true
+      skipTypename: true
+
+  src/generated/schema.json:
+    plugins:
+      - introspection
+    config:
+      minify: true
+
+hooks:
+  afterAllFileWrite:
+    - prettier --write

@@ -1,0 +1,13 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "types": ["node", "jest", "express"],
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "allowJs": true,
+    "strictNullChecks": false,
+    "noImplicitAny": false
+  },
+  "include": ["**/*.ts", "../src/**/*.ts"],
+  "exclude": ["node_modules"]
+}

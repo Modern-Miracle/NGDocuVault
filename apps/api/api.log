@@ -1,0 +1,8 @@
+
+> docu-api@0.1.0 dev:api /home/baloz/uV/MM/Docu/apps/api
+> ts-node-dev --respawn --transpile-only src/server.ts
+
+[INFO] 16:27:43 ts-node-dev ver. 2.0.0 (using ts-node ver. 10.9.2, typescript ver. 5.8.2)
+local
+Server is running on port 5000
+ ELIFECYCLE  Command failed.

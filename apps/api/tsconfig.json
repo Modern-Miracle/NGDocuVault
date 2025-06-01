@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "@docu/typescript-config/base.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./",
+    "baseUrl": ".",
+    "forceConsistentCasingInFileNames": true,
+    "paths": {
+      "@/*": ["./*"]
+    },
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "types": ["./src/types/express.d.ts"]
+  },
+  "include": ["./**/*"],
+  "exclude": ["node_modules", "dist", "**/*.test.ts"]
+}

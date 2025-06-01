@@ -1,0 +1,10 @@
+{
+  "extends": ["@docu/eslint-config/base"],
+  "env": {
+    "node": true,
+    "mocha": true
+  },
+  "rules": {
+    "@typescript-eslint/no-unused-vars": "error"
+  }
+}

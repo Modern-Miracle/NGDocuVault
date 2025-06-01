@@ -1,0 +1,34 @@
+{
+  "name": "@docu/graphql-schema-codegen",
+  "version": "0.1.0",
+  "description": "GraphQL schema with code generation for Docu",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "npx graphql-codegen --config codegen.yml && tsc",
+    "dev": "tsc --watch",
+    "clean": "rimraf dist",
+    "generate": "graphql-codegen",
+    "test": "jest",
+    "lint": "eslint --ext .ts ./src",
+    "check-types": "tsc --noEmit"
+  },
+  "files": [
+    "dist",
+    "graphql"
+  ],
+  "dependencies": {
+    "graphql": "^16.11.0"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "^5.0.5",
+    "@graphql-codegen/typescript": "^4.1.6",
+    "@graphql-codegen/typescript-resolvers": "^4.5.0",
+    "@graphql-codegen/introspection": "^4.0.3",
+    "@types/jest": "^29.5.14",
+    "eslint": "^9.23.0",
+    "rimraf": "^6.0.1",
+    "ts-jest": "^29.3.2",
+    "typescript": "^5.8.3"
+  }
+}

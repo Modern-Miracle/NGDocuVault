@@ -1,0 +1,37 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Error Handling
+
+DocuVault uses standardized error responses for consistent client-side handling.
+
+## Error Response Format
+```typescript
+interface ErrorResponse {
+  success: false;
+  error: {
+    code: string;
+    message: string;
+    details?: any;
+  };
+}
+```
+
+## Common Error Codes
+| Code               | Description                                     |
+| ------------------ | ----------------------------------------------- |
+| `validation_error` | Invalid input parameters                        |
+| `not_found`        | Requested resource not found                    |
+| `unauthorized`     | User not authenticated or session invalid       |
+| `forbidden`        | User does not have permission for the operation |
+| `blockchain_error` | Error interacting with the blockchain           |
+| `server_error`     | Internal server error                           |
+
+## Best Practices
+- Always check the `success` property to determine if the request succeeded
+- Handle specific error codes appropriately in the UI
+- Provide user-friendly error messages based on error codes
+
+Reference: [apps/api/docs/dev-docs/frontend-api-reference.md](mdc:apps/api/docs/dev-docs/frontend-api-reference.md)

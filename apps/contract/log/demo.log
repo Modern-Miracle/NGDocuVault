@@ -1,0 +1,31 @@
+Starting DocuVault Graph demo script...
+Contract address: 0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9
+Owner address: 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+Issuer address: 0x70997970C51812dc3A010C7d01b50e0d17dc79C8
+Holder address: 0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC
+Verifier address: 0x90F79bf6EB2c4f870365E785982E1f101E93b906
+
+--- Registering Issuer ---
+Issuer registered: 0x70997970C51812dc3A010C7d01b50e0d17dc79C8
+Issuer active status: true
+
+--- Registering Document ---
+Document registered with ID: 0x5e7e8077e9213172ee087648f839265567589cc6c811677d877ee6ec8752485e
+
+--- Requesting Verification ---
+Error requesting verification: Error: VM Exception while processing transaction: reverted with custom error 'DocuVault__AlreadyVerified()'
+
+--- Setting up Verifier ---
+Granted verifier role to: 0x90F79bf6EB2c4f870365E785982E1f101E93b906
+
+--- Verifying Document ---
+Error verifying document: Error: VM Exception while processing transaction: reverted with custom error 'DocuVault__NotIssuer()'
+Document verification status: true
+
+--- Requesting Document Sharing ---
+Error requesting share: VM Exception while processing transaction: reverted with an unrecognized custom error (return data: 0x09461aeb)
+
+--- Granting Consent for Sharing ---
+Error sharing document: Error: VM Exception while processing transaction: reverted with custom error 'DocuVault__NotGranted()'
+
+All transactions completed! Check the Graph indexing...

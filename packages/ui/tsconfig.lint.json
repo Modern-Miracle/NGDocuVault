@@ -1,0 +1,9 @@
+{
+  "extends": "@docu/typescript-config/react-library.json",
+  "compilerOptions": {
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "dist"
+  },
+  "include": ["src", "turbo"],
+  "exclude": ["node_modules", "dist"]
+}

@@ -1,0 +1,59 @@
+### This file contains HTTP requests for testing the auth endpoints
+### It can be used with the REST Client extension in VS Code
+
+@baseUrl = http://localhost:5000/api/v1
+@contentType = application/json
+@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+### ==============================
+### Authentication Flow
+### ==============================
+
+### Step 0: Get nonce
+GET {{baseUrl}}/auth/siwe/nonce?address=0x1234567890123456789012345678901234567890&chainId=31337
+
+### Step 1: Generate a challenge for authentication
+POST {{baseUrl}}/auth/siwe/generate-challenge
+Content-Type: {{contentType}}
+
+{
+  "did": "did:ala:mainnet:0x1234567890123456789012345678901234567890"
+}
+
+### Step 2: Authenticate a DID using signature (this requires signing the message from step 1)
+POST {{baseUrl}}/auth/authenticate
+Content-Type: {{contentType}}
+
+{
+  "did": "did:ala:mainnet:0x1234567890123456789012345678901234567890",
+  "message": "Authenticate with DID did:ala:mainnet:0x1234567890123456789012345678901234567890 at time 1677676800. Challenge: abcdef1234567890",
+  "signature": "0x..."
+}
+
+### Step 3: Check authentication status
+GET {{baseUrl}}/auth/check
+Authorization: Bearer {{authToken}}
+
+### Step 4: Refresh token when needed
+POST {{baseUrl}}/auth/refresh
+Content-Type: {{contentType}}
+Authorization: Bearer {{authToken}}
+
+### ==============================
+### DID Management & Verification
+### ==============================
+
+### Verify if an address controls a DID
+POST {{baseUrl}}/auth/verify-controller
+Content-Type: {{contentType}}
+
+{
+  "did": "did:ala:mainnet:0x1234567890123456789012345678901234567890",
+  "address": "0x1234567890123456789012345678901234567890"
+}
+
+### Get DID for an Ethereum address
+GET {{baseUrl}}/auth/address/0x1234567890123456789012345678901234567890
+
+### Check if a DID is active
+GET {{baseUrl}}/auth/did/did:ala:mainnet:0x1234567890123456789012345678901234567890/active

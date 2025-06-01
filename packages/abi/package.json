@@ -1,0 +1,27 @@
+{
+  "name": "@docu/abi",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint .",
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@docu/eslint-config": "workspace:*",
+    "@docu/typescript-config": "workspace:*",
+    "typescript": "^5.8.2"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  }
+}

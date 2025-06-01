@@ -1,0 +1,112 @@
+# Query to get all documents with pagination
+query GetDocuments($first: Int = 5, $skip: Int = 0) {
+  documents(first: $first, skip: $skip) {
+    id
+    documentId
+    documentType
+    issuanceDate
+    expirationDate
+    isVerified
+    issuer {
+      id
+      address
+    }
+    holder {
+      id
+      address
+    }
+  }
+}
+
+# Query to get documents by holder
+query GetDocumentsByHolder($holderId: ID!, $first: Int = 5, $skip: Int = 0) {
+  holder(id: $holderId) {
+    documents(first: $first, skip: $skip) {
+      id
+      documentId
+      documentType
+      issuanceDate
+      expirationDate
+      isVerified
+      isExpired
+      registeredAt
+      verifiedAt
+      verifiedBy
+      issuer {
+        id
+        address
+        isActive
+      }
+    }
+  }
+}
+
+# Query to get a document by ID
+query GetDocument($id: ID!) {
+  document(id: $id) {
+    id
+    documentId
+    issuanceDate
+    expirationDate
+    isVerified
+    documentType
+    isExpired
+    registeredAt
+    verifiedAt
+    verifiedBy
+    issuer {
+      id
+      address
+      isActive
+    }
+    holder {
+      id
+      address
+    }
+  }
+}
+
+# Get issuer details
+query GetIssuer($id: ID!) {
+  issuer(id: $id) {
+    id
+    address
+    isActive
+    registeredAt
+    activatedAt
+    deactivatedAt
+    documents(first: 5) {
+      id
+      documentId
+      documentType
+    }
+  }
+}
+
+# Get holder details
+query GetHolder($id: ID!) {
+  holder(id: $id) {
+    id
+    address
+    documents(first: 5) {
+      id
+      documentId
+      documentType
+    }
+  }
+}
+
+# Get documents count
+query GetDocumentsCount {
+  documentsCount
+}
+
+# Get issuers with pagination
+query GetIssuers($first: Int = 10, $skip: Int = 0) {
+  issuers(first: $first, skip: $skip) {
+    id
+    address
+    isActive
+    registeredAt
+  }
+}

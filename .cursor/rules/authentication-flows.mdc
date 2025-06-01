@@ -1,0 +1,25 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Authentication Flows
+
+The DocuVault API supports two authentication methods:
+
+## JWT Authentication Flow
+1. Generate a challenge: `POST /api/v1/auth/jwt/generate-challenge`
+2. Sign the challenge with the user's wallet
+3. Authenticate: `POST /api/v1/auth/jwt/authenticate`
+4. Store tokens for authenticated requests
+5. Refresh token when needed: `POST /api/v1/auth/jwt/refresh`
+
+## SIWE Authentication Flow
+1. Obtain a nonce: `GET /api/v1/auth/siwe/nonce`
+2. Create and sign a SIWE message
+3. Verify the message: `POST /api/v1/auth/siwe/verify`
+4. Make authenticated requests using the token
+5. Refresh when needed: `POST /api/v1/auth/siwe/refresh`
+6. Logout when done: `POST /api/v1/auth/siwe/logout`
+
+Reference: [apps/api/docs/dev-docs/frontend-api-reference.md](mdc:apps/api/docs/dev-docs/frontend-api-reference.md)

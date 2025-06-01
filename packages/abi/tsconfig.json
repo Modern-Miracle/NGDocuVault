@@ -1,0 +1,25 @@
+{
+  "extends": "@docu/typescript-config/base.json",
+  "include": ["*.ts"],
+  "exclude": ["dist", "node_modules"],
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": ".",
+    "declaration": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "target": "ES2022",
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "forceConsistentCasingInFileNames": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "declarationMap": true,
+    "verbatimModuleSyntax": true,
+    "paths": {
+      "@/*": ["./*"],
+      "@docu/abi": ["../abi/dist/index.js"]
+    }
+  }
+}

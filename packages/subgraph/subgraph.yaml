@@ -1,0 +1,148 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+features:
+  - nonFatalErrors
+  - fullTextSearch
+dataSources:
+  - kind: ethereum
+    name: DocuVault
+    network: hardhat
+    source:
+      address: '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9'
+      abi: DocuVault
+      startBlock: 1
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Document
+        - Issuer
+        - Holder
+        - ShareRequest
+        - VerificationRequest
+      abis:
+        - name: DocuVault
+          file: ../../apps/contract/artifacts/src/DocuVault.sol/DocuVault.json
+      eventHandlers:
+        - event: IssuerRegistered(indexed address,uint256)
+          handler: handleIssuerRegistered
+        - event: DocumentRegistered(indexed bytes32,indexed address,indexed address,uint256)
+          handler: handleDocumentRegistered
+        - event: DocumentVerified(indexed bytes32,indexed address,uint256)
+          handler: handleDocumentVerified
+        - event: DocumentBatchVerified(indexed bytes32[],uint256,indexed address,uint256)
+          handler: handleDocumentBatchVerified
+        - event: IssuerDeactivated(indexed address,uint256)
+          handler: handleIssuerDeactivated
+        - event: IssuerActivated(indexed address,uint256)
+          handler: handleIssuerActivated
+        - event: DocumentShared(indexed bytes32,indexed address,uint256)
+          handler: handleDocumentShared
+        - event: VerificationRequested(indexed bytes32,indexed address,uint256)
+          handler: handleVerificationRequested
+        - event: ConsentGranted(indexed bytes32,indexed address,uint256)
+          handler: handleConsentGranted
+        - event: ConsentRevoked(indexed bytes32,indexed address,uint256)
+          handler: handleConsentRevoked
+        - event: ShareRequested(indexed bytes32,indexed address,uint256)
+          handler: handleShareRequested
+        - event: DocumentUpdated(indexed bytes32,indexed bytes32,indexed address,uint256)
+          handler: handleDocumentUpdated
+      file: ./src/mapping.ts
+  - kind: ethereum
+    name: DIDRegistry
+    network: hardhat
+    source:
+      address: '0x5FbDB2315678afecb367f032d93F642f64180aa3'
+      abi: DidRegistry
+      startBlock: 1
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - DID
+      abis:
+        - name: DidRegistry
+          file: ../../apps/contract/artifacts/src/DidRegistry.sol/DidRegistry.json
+      eventHandlers:
+        - event: DIDRegistered(string,indexed address)
+          handler: handleDIDRegistered
+        - event: DIDUpdated(string,indexed uint256)
+          handler: handleDIDUpdated
+        - event: DIDDeactivated(string,indexed uint256)
+          handler: handleDIDDeactivated
+      file: ./src/did-mapping.ts
+  - kind: ethereum
+    name: DIDVerifier
+    network: hardhat
+    source:
+      address: '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512'
+      abi: DidVerifier
+      startBlock: 1
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - TrustedIssuer
+      abis:
+        - name: DidVerifier
+          file: ../../apps/contract/artifacts/src/DidVerifier.sol/DidVerifier.json
+      eventHandlers:
+        - event: IssuerTrustStatusUpdated(string,address,bool)
+          handler: handleIssuerTrustStatusUpdated
+      file: ./src/did-mapping.ts
+  - kind: ethereum
+    name: DIDIssuer
+    network: hardhat
+    source:
+      address: '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0'
+      abi: DidIssuer
+      startBlock: 1
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Credential
+      abis:
+        - name: DidIssuer
+          file: ../../apps/contract/artifacts/src/DidIssuer.sol/DidIssuer.json
+      eventHandlers:
+        - event: CredentialIssued(string,string,bytes32,uint256)
+          handler: handleCredentialIssued
+      file: ./src/did-mapping.ts
+  - kind: ethereum
+    name: DIDAuth
+    network: hardhat
+    source:
+      address: '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9'
+      abi: DidAuth
+      startBlock: 1
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Role
+        - Authentication
+      abis:
+        - name: DidAuth
+          file: ../../apps/contract/artifacts/src/DidAuth.sol/DidAuth.json
+      eventHandlers:
+        - event: RoleGranted(string,bytes32,uint256)
+          handler: handleRoleGranted
+        - event: RoleRevoked(string,bytes32,uint256)
+          handler: handleRoleRevoked
+        - event: AuthenticationSuccessful(string,bytes32,uint256)
+          handler: handleAuthenticationSuccessful
+        - event: AuthenticationFailed(string,bytes32,uint256)
+          handler: handleAuthenticationFailed
+        - event: CredentialVerified(string,string,bytes32,uint256)
+          handler: handleCredentialVerified
+        - event: CredentialVerificationFailed(string,string,bytes32,uint256)
+          handler: handleCredentialVerificationFailed
+      file: ./src/did-mapping.ts

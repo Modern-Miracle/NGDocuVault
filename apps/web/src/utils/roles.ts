@@ -1,0 +1,8 @@
+export const CONFIRMED_ROLE_NAMES = [
+  'ADMIN_ROLE',
+  'DEFAULT_ADMIN_ROLE',
+  'HOLDER_ROLE',
+  'ISSUER_ROLE',
+  'OPERATOR_ROLE',
+  'VERIFIER_ROLE',
+] as const;
