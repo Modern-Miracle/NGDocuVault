@@ -1,0 +1,65 @@
+node_modules
+dist
+.git
+.env*
+*.log
+coverage
+.nyc_output
+.cache
+.parcel-cache
+.next
+out
+build
+.turbo
+.vscode
+.idea
+*.md
+docs/
+__tests__
+test/
+*.test.*
+*.spec.*
+jest.config.*
+cypress/
+playwright/
+.github/
+.husky/
+
+# Exclude contract-related files (not needed in web/api container)
+apps/contract/
+packages/subgraph/
+packages/graphql-schema-codegen/
+packages/graphql-client-codegen/
+
+# Specifically exclude problematic directories
+packages/subgraph/data/
+packages/subgraph/data/postgres/
+packages/subgraph/data/postgres/**
+packages/subgraph/data/ipfs/
+packages/subgraph/data/ipfs/**
+packages/subgraph/node_modules/
+**/data/postgres/
+**/data/ipfs/
+**/postgres/
+**/ipfs/
+
+# Exclude specific contract directories
+**/artifacts/
+**/cache/
+**/circuits/
+**/coverage/
+**/deployments/
+**/typechain-types/
+**/node_modules/
+**/tmp/
+
+# Exclude large circuit files
+**/*.ptau
+**/*.r1cs
+**/*.wasm
+**/*.zkey
+**/*.wtns
+
+# Exclude documentation
+docs-dev/
+docs/subgraph/
