@@ -28,13 +28,13 @@ NGDocuVault is designed to provide **secure document storage and verification** 
 If you discover a vulnerability that could affect document security or expose sensitive information:
 
 **IMMEDIATE CONTACT:**
-- **Modern Miracle Security**: [security@modern-miracle.com](mailto:security@modern-miracle.com)
+- **Modern Miracle Security**: [hello@modern-miracle.com](mailto:hello@modern-miracle.com)
 - **Subject Line**: `[CRITICAL SECURITY] Document Security Vulnerability`
 
 ### **🟡 Standard Security Issues**
 For non-critical security issues:
 
-**Email**: [security@modern-miracle.com](mailto:security@modern-miracle.com)
+**Email**: [hello@modern-miracle.com](mailto:hello@modern-miracle.com)
 **Subject**: `[SECURITY] NGDocuVault Vulnerability Report`
 
 ### **What to Include**
@@ -176,7 +176,7 @@ Security researchers who help protect document security will be:
 - **Emergency Hotline**: Available for critical vulnerabilities
 
 ### **For General Security Questions**
-- **Development Team**: [contact@modern-miracle.com](mailto:contact@modern-miracle.com)
+- **Development Team**: [hello@modern-miracle.com](mailto:hello@modern-miracle.com)
 - **GitHub Security Advisories**: Use GitHub's private vulnerability reporting
 
 ---
