@@ -1,4 +1,5 @@
 import * as sql from 'mssql';
+import { dbConfig } from '../../config/db.config';
 
 /**
  * Configuration options for the database service
@@ -31,12 +32,11 @@ export abstract class BaseDatabaseService {
    */
   constructor(config?: Partial<DatabaseConfig>) {
     this.config = {
-      server: config?.server || process.env.DB_SERVER || 'localhost',
-      port: config?.port || parseInt(process.env.DB_PORT || '1433'),
-      user: config?.user || process.env.DB_USER || 'sa',
-      password:
-        config?.password || process.env.DB_PASSWORD || 'DocuVault_P@ssw0rd',
-      database: config?.database || process.env.DB_DATABASE || 'DocuVault',
+      server: config?.server || dbConfig?.host || 'localhost',
+      port: config?.port || dbConfig?.port || 1433,
+      user: config?.user || dbConfig.user || 'sa',
+      password: config?.password || dbConfig.password || 'DocuVault_P@ssw0rd',
+      database: config?.database || dbConfig.database || 'DocuVault',
       options: {
         encrypt: config?.options?.encrypt ?? false,
         trustServerCertificate: config?.options?.trustServerCertificate ?? true
@@ -54,11 +54,11 @@ export abstract class BaseDatabaseService {
 
     try {
       this.poolPromise = new sql.ConnectionPool({
-        server: this.config.server,
-        port: this.config.port,
-        user: this.config.user,
-        password: this.config.password,
-        database: this.config.database,
+        server: this.config.server || dbConfig.host,
+        port: this.config.port || dbConfig.port,
+        user: this.config.user || dbConfig.user,
+        password: this.config.password || dbConfig.password,
+        database: this.config.database || dbConfig.database,
         options: {
           encrypt: this.config.options?.encrypt ?? false,
           trustServerCertificate:

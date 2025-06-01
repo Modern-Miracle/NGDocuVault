@@ -74,6 +74,7 @@ contract DocuVault is Ownable, Pausable, AccessControl {
         uint256 expirationDate; // When the document expires
         bool isVerified; // Whether document is verified by issuer
         DocumentType documentType; // Type of the document
+        string cid; // IPFS CID where the document is stored
     }
 
     // ========== STORAGE ==========
@@ -511,7 +512,8 @@ contract DocuVault is Ownable, Pausable, AccessControl {
             issuanceDate: effectiveIssuanceDate,
             expirationDate: expirationDate,
             isVerified: isSenderIssuer, // auto-verified if issuer registers
-            documentType: documentType
+            documentType: documentType,
+            cid: cid
         });
 
         // Add document to holder's document list
@@ -567,7 +569,8 @@ contract DocuVault is Ownable, Pausable, AccessControl {
             issuanceDate: block.timestamp,
             expirationDate: expirationDate,
             isVerified: isSenderIssuer, // auto-verified if issuer updates
-            documentType: documentType
+            documentType: documentType,
+            cid: cid
         });
 
         // Add new document to holder's document list
@@ -839,6 +842,7 @@ contract DocuVault is Ownable, Pausable, AccessControl {
      * @return issuanceDate The issuance date of the document
      * @return expirationDate The expiration date of the document
      * @return documentType The type of the document
+     * @return cid The IPFS CID where the document is stored
      */
     function getDocumentInfo(bytes32 documentId)
         external
@@ -850,7 +854,8 @@ contract DocuVault is Ownable, Pausable, AccessControl {
             address holder,
             uint256 issuanceDate,
             uint256 expirationDate,
-            DocumentType documentType
+            DocumentType documentType,
+            string memory cid
         )
     {
         Document storage doc = documents[documentId];
@@ -863,7 +868,8 @@ contract DocuVault is Ownable, Pausable, AccessControl {
             doc.holder,
             doc.issuanceDate,
             doc.expirationDate,
-            doc.documentType
+            doc.documentType,
+            doc.cid
         );
     }
 

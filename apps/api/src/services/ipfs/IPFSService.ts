@@ -303,7 +303,7 @@ export class IPFSService {
   async encryptAndUpload(data: BlockchainUpdateRequest): Promise<any> {
     try {
       let uploadData: any;
-      
+
       // Check if encryption is enabled
       if (this.encryptionKey && this.encryptionKey.length > 0) {
         const encrypted = encrypt(

@@ -187,16 +187,28 @@ export function useResolveDidReg(did?: string) {
  */
 export function useRegisterDid() {
   const queryClient = useQueryClient();
-  const { address } = useAccount();
+  const { address, chain } = useAccount();
   const { data: walletClient } = useWalletClient();
   const publicClient = usePublicClient();
   const { toast } = useToast();
+
+  // Debug logging
+  console.log('[useRegisterDid] Hook state:', {
+    address,
+    chainId: chain?.id,
+    chainName: chain?.name,
+    hasWalletClient: !!walletClient,
+    hasPublicClient: !!publicClient,
+  });
 
   return useMutation({
     mutationFn: async (params: { did: string; document: string; publicKey: string }) => {
       if (!address) throw new Error('Wallet not connected');
       if (!walletClient) throw new Error('Wallet client not available');
-      if (!publicClient) throw new Error('Public client not available');
+      if (!publicClient) {
+        console.error('Public client not available. Chain may not be properly configured.');
+        throw new Error('Public client not available. Please check network connection and chain configuration.');
+      }
 
       // Prepare the transaction data on the server
       const preparedTx = await didRegistryActions.registerDid(params.did, params.document, params.publicKey);

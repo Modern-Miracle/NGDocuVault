@@ -30,6 +30,7 @@ export const IPFS_ENDPOINTS = {
   deleteData: `${API_BASE_URL}/ipfs/data`,
 };
 
+console.log('env.VITE_RPC_URL', env.VITE_RPC_URL);
 // Network configuration
 export const NETWORK_CONFIG = {
   // Use the local API proxy to avoid CORS issues
@@ -46,7 +47,7 @@ export const DEBUG = {
 // Constants for ENS/DID resolvers
 export const ENS_RESOLVER = {
   // Use the proxy endpoint for Merkle.io to avoid CORS issues
-  merkleUrl: 'http://localhost:5000/api/v1/proxy/merkle',
+  merkleUrl: `${env.VITE_API_BASE_URL}/proxy/merkle`,
   timeout: 5000, // Timeout in ms
   retries: 2, // Number of retries
 };

@@ -1,9 +1,10 @@
 // API client for SIWE authentication
 import { SiweMessage } from 'siwe';
 import { DEBUG } from '@/lib/config';
+import { env } from '@/config/env';
 
 // API base URL hardcoded for development to avoid hostname resolution issues
-const API_BASE_URL = 'http://localhost:5000/api/v1';
+const API_BASE_URL = env.VITE_API_BASE_URL;
 
 /**
  * Fetch a nonce for SIWE authentication

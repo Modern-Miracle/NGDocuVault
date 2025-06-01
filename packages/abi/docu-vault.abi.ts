@@ -774,6 +774,11 @@ export const DocuVaultABI = [
         name: 'documentType',
         type: 'uint8',
       },
+      {
+        internalType: 'string',
+        name: 'cid',
+        type: 'string',
+      },
     ],
     stateMutability: 'view',
     type: 'function',
@@ -880,6 +885,11 @@ export const DocuVaultABI = [
         internalType: 'enum DocuVault.DocumentType',
         name: 'documentType',
         type: 'uint8',
+      },
+      {
+        internalType: 'string',
+        name: 'cid',
+        type: 'string',
       },
     ],
     stateMutability: 'view',

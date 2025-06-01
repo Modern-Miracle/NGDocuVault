@@ -211,7 +211,7 @@ cleanup() {
   log "Cleaning up existing processes and containers..."
   
   # Check for any processes using our ports and kill them
-  cleanup_ports 8545 "Hardhat"
+  # cleanup_ports 8545 "Hardhat"
   cleanup_ports 5000 "API"
   cleanup_ports 3000 "Web app"
   cleanup_ports 3001 "Docs app"
@@ -364,8 +364,8 @@ main() {
   cleanup
   
   # Start components sequentially
-  start_hardhat
-  deploy_contracts
+  # start_hardhat
+  # deploy_contracts
   # start_graph
   start_api
   start_web_apps

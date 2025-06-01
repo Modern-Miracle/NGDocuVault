@@ -29,6 +29,7 @@ export interface DocumentInfo {
   issuanceDate: number;
   expirationDate: number;
   documentType: DocumentType;
+  cid: string;
 }
 
 export interface DocumentBasic {
@@ -38,6 +39,7 @@ export interface DocumentBasic {
   expirationDate: number;
   isVerified: boolean;
   documentType: DocumentType;
+  cid: string;
 }
 
 export interface ConsentStatus {
@@ -192,6 +194,7 @@ export interface GetDocumentInfoOutput {
   issuanceDate: number;
   expirationDate: number;
   documentType: DocumentType;
+  cid: string;
 }
 
 export interface IsDocumentExpiredOutput {

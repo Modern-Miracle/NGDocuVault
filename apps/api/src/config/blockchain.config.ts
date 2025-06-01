@@ -30,7 +30,6 @@ const getNetworkConfig = (): NetworkConfig => {
     };
   }
 
-  console.log(process.env.NETWORK);
   switch (process.env.NETWORK) {
     case 'local':
       return {
@@ -46,15 +45,15 @@ const getNetworkConfig = (): NetworkConfig => {
       };
     case 'sepolia':
       return {
-        rpcUrl: env.TESTNET_RPC_URL,
-        networkId: Number(env.TESTNET_NETWORK_ID),
-        contractAddress: env.TESTNET_CONTRACT_ADDRESS,
-        privateKey: env.TESTNET_PRIVATE_KEY,
-        didAuthContractAddress: env.TESTNET_DID_AUTH_CONTRACT_ADDRESS,
-        didRegistryContractAddress: env.TESTNET_DID_REGISTRY_CONTRACT_ADDRESS,
-        didVerifierContractAddress: env.TESTNET_DID_VERIFIER_CONTRACT_ADDRESS,
-        didIssuerContractAddress: env.TESTNET_DID_ISSUER_CONTRACT_ADDRESS,
-        docuVaultContractAddress: env.TESTNET_DOCU_VAULT_CONTRACT_ADDRESS
+        rpcUrl: env.SEPOLIA_RPC_URL,
+        networkId: Number(env.SEPOLIA_NETWORK_ID),
+        contractAddress: env.SEPOLIA_CONTRACT_ADDRESS,
+        privateKey: env.SEPOLIA_PRIVATE_KEY,
+        didAuthContractAddress: env.SEPOLIA_DID_AUTH_CONTRACT_ADDRESS,
+        didRegistryContractAddress: env.SEPOLIA_DID_REGISTRY_CONTRACT_ADDRESS,
+        didVerifierContractAddress: env.SEPOLIA_DID_VERIFIER_CONTRACT_ADDRESS,
+        didIssuerContractAddress: env.SEPOLIA_DID_ISSUER_CONTRACT_ADDRESS,
+        docuVaultContractAddress: env.SEPOLIA_DOCU_VAULT_CONTRACT_ADDRESS
       };
     case 'mainnet':
       return {

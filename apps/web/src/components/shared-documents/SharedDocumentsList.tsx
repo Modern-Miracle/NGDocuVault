@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Eye, Shield, ShieldOff, Share2, FileText, AlertCircle, Loader2, Clock } from 'lucide-react';
+import { Eye, Shield, ShieldOff, Share2, AlertCircle, Loader2, Clock } from 'lucide-react';
 import { useSharedDocuments } from './SharedDocumentsProvider';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';

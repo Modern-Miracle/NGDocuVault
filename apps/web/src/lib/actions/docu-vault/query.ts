@@ -63,9 +63,9 @@ export async function getDocument(documentId: string): Promise<DocumentBasic> {
       abi: DocuVaultABI,
       functionName: 'documents',
       args: [documentId],
-    })) as [string, string, number, number, boolean, number];
+    })) as [string, string, number, number, boolean, number, string];
 
-    const [issuer, holder, issuanceDate, expirationDate, isVerified, documentType] = result;
+    const [issuer, holder, issuanceDate, expirationDate, isVerified, documentType, cid] = result;
 
     return {
       issuer: issuer as `0x${string}`,
@@ -74,6 +74,7 @@ export async function getDocument(documentId: string): Promise<DocumentBasic> {
       expirationDate: Number(expirationDate),
       isVerified,
       documentType: documentType as DocumentType,
+      cid,
     };
   } catch (error) {
     console.error('Error getting document:', error);
@@ -175,9 +176,9 @@ export async function getDocumentInfo(documentId: string): Promise<GetDocumentIn
       abi: DocuVaultABI,
       functionName: 'getDocumentInfo',
       args: [documentId],
-    })) as [boolean, boolean, string, string, number, number, number];
+    })) as [boolean, boolean, string, string, number, number, number, string];
 
-    const [isVerified, isExpired, issuer, holder, issuanceDate, expirationDate, documentType] = result;
+    const [isVerified, isExpired, issuer, holder, issuanceDate, expirationDate, documentType, cid] = result;
 
     return {
       isVerified,
@@ -187,6 +188,7 @@ export async function getDocumentInfo(documentId: string): Promise<GetDocumentIn
       issuanceDate: Number(issuanceDate),
       expirationDate: Number(expirationDate),
       documentType: documentType as DocumentType,
+      cid,
     };
   } catch (error) {
     console.error('Error getting document info:', error);
@@ -539,9 +541,9 @@ export async function getMultipleDocumentInfo(documentIds: string[]): Promise<Do
             abi: DocuVaultABI,
             functionName: 'getDocumentInfo',
             args: [documentId],
-          })) as [boolean, boolean, string, string, number, number, number];
+          })) as [boolean, boolean, string, string, number, number, number, string];
 
-          const [isVerified, isExpired, issuer, holder, issuanceDate, expirationDate, documentType] = result;
+          const [isVerified, isExpired, issuer, holder, issuanceDate, expirationDate, documentType, cid] = result;
 
           return {
             isVerified,
@@ -551,6 +553,7 @@ export async function getMultipleDocumentInfo(documentIds: string[]): Promise<Do
             issuanceDate: Number(issuanceDate),
             expirationDate: Number(expirationDate),
             documentType: documentType as DocumentType,
+            cid,
           };
         } catch (error) {
           console.error(`Error getting info for document ${documentId}:`, error);

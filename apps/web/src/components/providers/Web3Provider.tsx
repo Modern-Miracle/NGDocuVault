@@ -1,9 +1,10 @@
 import { WagmiProvider, createConfig, http } from 'wagmi';
-import { hardhat } from 'wagmi/chains';
+import { hardhat, sepolia } from 'wagmi/chains';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ConnectKitProvider, getDefaultConfig } from 'connectkit';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { NETWORK_CONFIG } from '@/lib/config';
+import { env } from '@/config/env';
 import { useEffect } from 'react';
 
 console.log('[Web3Provider] Initializing with network config:', {
@@ -24,21 +25,41 @@ const queryClient = new QueryClient({
   },
 });
 
+// Configure transports for both chains
+const getTransports = () => {
+  const transports: Record<number, ReturnType<typeof http>> = {};
+
+  // Always include hardhat for local development
+  transports[hardhat.id] = http('http://127.0.0.1:8545');
+
+  // Add Sepolia transport if we're in production or have Sepolia RPC URL
+  const sepoliaRpcUrl = env.VITE_RPC_URL;
+  if (sepoliaRpcUrl && (env.VITE_CHAIN_ID === '11155111' || sepoliaRpcUrl.includes('sepolia'))) {
+    transports[sepolia.id] = http(sepoliaRpcUrl);
+  } else {
+    // Fallback to a public Sepolia RPC
+    transports[sepolia.id] = http('https://rpc.sepolia.org');
+  }
+
+  return transports;
+};
+
 const config = createConfig(
   getDefaultConfig({
-    chains: [hardhat],
-    transports: {
-      [hardhat.id]: http(NETWORK_CONFIG.rpcUrl),
-    },
-    walletConnectProjectId: NETWORK_CONFIG.walletConnectProjectId,
+    chains: [hardhat, sepolia],
+    transports: getTransports(),
+    walletConnectProjectId: NETWORK_CONFIG.walletConnectProjectId!,
     appName: 'Docu Vault Secure Sharing',
     appDescription: 'Docu Vault Secure Sharing: A secure way to share documents with your family and friends.',
   })
 );
 
-console.log('[Web3Provider] Wagmi config created with chain:', {
-  chainId: hardhat.id,
-  chainName: hardhat.name,
+console.log('[Web3Provider] Wagmi config created with chains:', {
+  currentChainId: env.VITE_CHAIN_ID,
+  hardhatChainId: hardhat.id,
+  sepoliaChainId: sepolia.id,
+  rpcUrl: env.VITE_RPC_URL,
+  transports: Object.keys(getTransports()),
 });
 
 const Web3Monitor = () => {

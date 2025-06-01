@@ -9,6 +9,8 @@ import dotenv from 'dotenv';
 // Load environment variables from .env.development
 dotenv.config({ path: '.env' });
 
+const isDevelopment = process.env.NODE_ENV === 'development';
+
 export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
@@ -38,9 +40,13 @@ export default defineConfig(({ mode }) => ({
     },
   },
   server: {
+    watch: {
+      usePolling: true,
+      interval: 1000,
+    },
     proxy: {
       '/api/v1': {
-        target: 'http://localhost:5000',
+        target: isDevelopment ? 'http://localhost:5000' : '',
         changeOrigin: true,
         secure: false,
       },

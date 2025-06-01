@@ -174,12 +174,12 @@ export const DOCU_VAULT_KEYS = {
  * Document information from the contract
  */
 export interface DocumentInfo {
-  documentId: `0x${string}`;
-  contentHash: `0x${string}`;
-  cid?: string;
+  documentId: string;
+  contentHash?: `0x${string}`;
+  cid: string;
   holder: `0x${string}`;
   issuer: `0x${string}`;
-  documentType: bigint;
+  documentType: number;
   issuanceTimestamp: bigint;
   expirationTimestamp: bigint;
   isVerified: boolean;

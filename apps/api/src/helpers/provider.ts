@@ -2,7 +2,7 @@ import { ethers, JsonRpcProvider } from 'ethers';
 
 import {
   LOCAL_PRIVATE_KEY,
-  TESTNET_PRIVATE_KEY,
+  SEPOLIA_PRIVATE_KEY,
   MAINNET_PRIVATE_KEY
 } from '../constants';
 

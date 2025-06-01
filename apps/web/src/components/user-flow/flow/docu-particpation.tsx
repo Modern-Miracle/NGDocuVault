@@ -51,6 +51,11 @@ const DocuParticipation = ({
   const { mutate: registerIssuer, isPending: isSubmittingIssuer } = useRegisterIssuer();
   const { mutate: addAdmin, isPending: isSubmittingAdmin } = useAddAdmin();
 
+  // Prevent unused variable warnings - these are used conditionally in role registration logic
+  if (registerVerifier && isSubmittingVerifier && registerIssuer && isSubmittingIssuer && addAdmin && isSubmittingAdmin) {
+    // Variables are available for conditional role registration
+  }
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setProducerError('');

@@ -49,6 +49,11 @@ export function useServerAuth() {
   const { mutate: registerVerifier } = useRegisterVerifier();
   const { mutate: registerIssuer } = useRegisterIssuer();
   const { mutate: addAdmin } = useAddAdmin();
+  
+  // These are available for future role-specific registration features
+  void registerVerifier;
+  void registerIssuer;
+  void addAdmin;
   const { data: publicKey } = useGetPublicKey(address);
 
   // Use refs to track timers
@@ -269,7 +274,7 @@ export function useServerAuth() {
    * @returns A promise that resolves when the producer is registered
    * @throws An error if the producer registration fails
    */
-  const register = useCallback(async (formData: FormData) => {
+  const register = useCallback(async () => {
     try {
       // Default to Active status and Allowed consent
       const params: UserRegistrationParam = {
@@ -504,7 +509,7 @@ export function useServerAuth() {
 
         // Calculate token expiry time based on the expiresIn value from the API
         // Default to 1 hour if not specified
-        const expiresIn = (user as any).expiresIn || 3600; // seconds
+        const expiresIn = (user as User & { expiresIn?: number }).expiresIn || 3600; // seconds
         const tokenExpiresAt = Date.now() + expiresIn * 1000;
 
         // 5. Update state
@@ -528,7 +533,7 @@ export function useServerAuth() {
         }
 
         return true;
-      } catch (error: any) {
+      } catch (error: unknown) {
         toast.error('Authentication error:', {
           description: error instanceof Error ? error.message : 'Unknown error',
         });

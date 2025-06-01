@@ -43,3 +43,11 @@ CLAUDE.md
 .cursor/
 Sample.md
 
+
+# Specifically exclude problematic directories
+packages/subgraph/data/
+packages/subgraph/data/postgres/
+packages/subgraph/data/postgres/**
+packages/subgraph/node_modules/
+**/data/postgres/
+**/postgres/

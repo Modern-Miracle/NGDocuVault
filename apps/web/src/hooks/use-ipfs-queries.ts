@@ -376,45 +376,39 @@ export function useHolderDocumentsWithIPFSData(
                 functionName: 'getDocumentInfo',
                 args: [docId],
               })) as [
-                `0x${string}`, // documentId
-                `0x${string}`, // contentHash
-                string, // cid
-                `0x${string}`, // holder
-                `0x${string}`, // issuer
-                bigint, // documentType
-                bigint, // issuanceTimestamp
-                bigint, // expirationTimestamp
                 boolean, // isVerified
-                `0x${string}`, // verifier
-                bigint, // verificationTimestamp
+                boolean, // isExpired
+                string, // issuer
+                string, // holder
+                bigint, // issuanceDate
+                bigint, // expirationDate
+                number, // documentType
+                string, // cid
               ];
 
               const [
-                docIdResult,
-                contentHash,
-                cid,
-                holder,
-                issuer,
-                documentType,
-                issuanceTimestamp,
-                expirationTimestamp,
                 isVerified,
-                verifier,
-                verificationTimestamp,
+                , // isExpired - not used in this return
+                issuer,
+                holder,
+                issuanceDate,
+                expirationDate,
+                documentType,
+                cid,
               ] = result;
 
               return {
-                documentId: docIdResult,
-                contentHash,
+                documentId: docId,
+                contentHash: undefined, // Not available from getDocumentInfo
                 cid,
-                holder,
-                issuer,
-                documentType,
-                issuanceTimestamp,
-                expirationTimestamp,
+                holder: holder as `0x${string}`,
+                issuer: issuer as `0x${string}`,
+                documentType: Number(documentType),
+                issuanceTimestamp: BigInt(issuanceDate),
+                expirationTimestamp: BigInt(expirationDate),
                 isVerified,
-                verifier,
-                verificationTimestamp,
+                verifier: undefined, // Not available from getDocumentInfo
+                verificationTimestamp: BigInt(0), // Not available from getDocumentInfo
                 metadata: '',
               } as DocumentInfo;
             } catch (error) {

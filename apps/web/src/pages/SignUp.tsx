@@ -133,7 +133,7 @@ export default function SignUp() {
             {/* Connect Button */}
             <div className="space-y-4">
               <ConnectKitButton.Custom>
-                {({ isConnected, isConnecting, show, address }) => {
+                {({ isConnecting, show }) => {
                   return (
                     <Button
                       onClick={show}

@@ -11,7 +11,9 @@
     },
     "noImplicitAny": false,
     "strictNullChecks": false,
-    "types": ["./src/types/express.d.ts"]
+    "types": ["./src/types/express.d.ts"],
+    "moduleResolution": "node",
+    "allowImportingTsExtensions": false
   },
   "include": ["./**/*"],
   "exclude": ["node_modules", "dist", "**/*.test.ts"]

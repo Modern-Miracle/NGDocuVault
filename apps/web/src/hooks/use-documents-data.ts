@@ -6,6 +6,7 @@ import { DocumentType } from '@/lib/actions/docu-vault/types';
 export interface DocumentInfo {
   documentId: string;
   contentHash?: `0x${string}`;
+  cid: string;
   holder: `0x${string}`;
   issuer: `0x${string}`;
   issuanceTimestamp: bigint;
@@ -59,6 +60,7 @@ export const useDocumentsData = (): UseDocumentsDataReturn => {
       return {
         documentId: documentIds[index] || doc.documentId || '',
         contentHash: doc.contentHash,
+        cid: doc.cid || '',
         holder: doc.holder,
         issuer: doc.issuer,
         issuanceTimestamp: doc.issuanceTimestamp || BigInt(0),

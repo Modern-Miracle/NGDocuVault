@@ -3,7 +3,7 @@ import { useAuth } from '@/hooks/use-auth';
 import { usePublicClient, useWatchContractEvent } from 'wagmi';
 import { DocuVaultABI } from '@docu/abi';
 import { CONTRACTS } from '@/config/contract';
-import { useMultipleDocumentInfo, useConsentStatus } from '@/hooks/use-docu-vault';
+import { useMultipleDocumentInfo } from '@/hooks/use-docu-vault';
 import { DocumentType, Consent } from '@/lib/actions/docu-vault/types';
 import type { Log } from 'viem';
 
@@ -119,7 +119,7 @@ export const useSharedDocumentsData = (): UseSharedDocumentsDataReturn => {
         const sharedWithMeSet = new Set<string>();
         const sharedByMeSet = new Set<string>();
 
-        sharedEvents.forEach((event: any) => {
+        sharedEvents.forEach((event: DocumentLogEvent) => {
           if (event.args?.documentId && event.args?.holder) {
             const documentId = String(event.args.documentId);
             const sharedWith = String(event.args.holder) as `0x${string}`;
@@ -130,7 +130,7 @@ export const useSharedDocumentsData = (): UseSharedDocumentsDataReturn => {
           }
         });
 
-        consentEvents.forEach((event: any) => {
+        consentEvents.forEach((event: DocumentLogEvent) => {
           if (event.args?.documentId && event.args?.requester) {
             const documentId = String(event.args.documentId);
             const requester = String(event.args.requester) as `0x${string}`;
@@ -151,7 +151,7 @@ export const useSharedDocumentsData = (): UseSharedDocumentsDataReturn => {
         });
 
         // For each share request, check if there's a corresponding consent granted
-        for (const event of shareRequestedEvents as any[]) {
+        for (const event of shareRequestedEvents as DocumentLogEvent[]) {
           if (event.args?.documentId) {
             const documentId = String(event.args.documentId);
             // We'll need to get document info to check if current user is the holder
