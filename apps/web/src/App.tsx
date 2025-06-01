@@ -47,7 +47,6 @@ function App() {
       <Routes>
         {/* Root route with smart redirect */}
         <Route path="/" element={<RootRedirect />} />
-
         {/* Public routes */}
         <Route path="/landing" element={<LandingPage />} />
         <Route path="/home" element={<LandingPage />} />

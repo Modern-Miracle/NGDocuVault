@@ -16,7 +16,7 @@ const NotFound: React.FC = () => {
         <p className="text-muted-foreground mb-6">The page you are looking for doesn't exist or has been moved.</p>
 
         <Link
-          to="/"
+          to="/dashboard"
           className="block w-full py-3 px-4 bg-primary hover:bg-primary/90 text-primary-foreground font-medium rounded-lg transition-colors"
         >
           Return to Dashboard
