@@ -60,11 +60,11 @@ This Code of Conduct applies within all project spaces, and also applies when an
 Instances of abusive, harassing, or otherwise unacceptable behavior may be reported by contacting the project team at:
 
 ### **Primary Contacts**
-- **Modern Miracle**: [conduct@modern-miracle.com](mailto:conduct@modern-miracle.com)
+- **Modern Miracle**: [hello@modern-miracle.com](mailto:hello@modern-miracle.com)
 
 ### **Security-Related Issues**
 For security or privacy violations:
-- **Security Team**: [security@modern-miracle.com](mailto:security@modern-miracle.com)
+- **Security Team**: [hello@modern-miracle.com](mailto:hello@modern-miracle.com)
 - Use "Code of Conduct Violation" in the subject line
 
 All complaints will be reviewed and investigated and will result in a response that is deemed necessary and appropriate to the circumstances. The project team is obligated to maintain confidentiality with regard to the reporter of an incident.

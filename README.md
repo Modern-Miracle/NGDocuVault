@@ -539,10 +539,6 @@ This project has received funding from the European Union's Horizon Europe resea
 - **GitHub Discussions**: [Community questions and ideas](https://github.com/NGDocuVault-eu/ng-docuvault/discussions)
 - **Email Support**: [contact@hora-ev.eu](mailto:contact@hora-ev.eu)
 
-### **Community**
-- **Discord**: [Join our developer community](https://discord.gg/ngdocuvault)
-- **Twitter**: [@NGDocuVault](https://twitter.com/ngdocuvault)
-- **LinkedIn**: [NGDocuVault Project](https://linkedin.com/company/ngdocuvault)
 
 ---
 
