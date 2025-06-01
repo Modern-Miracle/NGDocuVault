@@ -1,0 +1,255 @@
+# NGDocuVault Production Docker Compose
+# Production-ready stack with security hardening and monitoring
+
+version: '3.8'
+
+services:
+  # Production Database (PostgreSQL for better production performance)
+  database:
+    image: postgres:15-alpine
+    container_name: ngdocuvault-db-prod
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB:-ngdocuvault}
+      - POSTGRES_USER=${POSTGRES_USER:-ngdocuvault}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - "127.0.0.1:5432:5432"  # Bind to localhost only
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./apps/api/scripts/init-db.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - ngdocuvault-prod-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-ngdocuvault} -d ${POSTGRES_DB:-ngdocuvault}"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '1.0'
+        reservations:
+          memory: 1G
+          cpus: '0.5'
+
+  # API Backend
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    container_name: ngdocuvault-api-prod
+    ports:
+      - "127.0.0.1:5000:5000"  # Bind to localhost only (use reverse proxy)
+    networks:
+      - ngdocuvault-prod-network
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+      - DATABASE_URL=${DATABASE_URL}
+      - JWT_SECRET=${JWT_SECRET}
+      - SESSION_SECRET=${SESSION_SECRET}
+      - CORS_ORIGIN=${CORS_ORIGIN}
+      - WEB3_STORAGE_TOKEN=${WEB3_STORAGE_TOKEN}
+      - PINATA_JWT=${PINATA_JWT}
+      - AZURE_CLIENT_ID=${AZURE_CLIENT_ID}
+      - AZURE_TENANT_ID=${AZURE_TENANT_ID}
+      - AZURE_CLIENT_SECRET=${AZURE_CLIENT_SECRET}
+      - AZURE_KEY_VAULT_URL=${AZURE_KEY_VAULT_URL}
+      - ETHEREUM_RPC_URL=${ETHEREUM_RPC_URL}
+      - POLYGON_RPC_URL=${POLYGON_RPC_URL}
+      - RATE_LIMIT_WINDOW_MS=${RATE_LIMIT_WINDOW_MS:-900000}
+      - RATE_LIMIT_MAX_REQUESTS=${RATE_LIMIT_MAX_REQUESTS:-100}
+    depends_on:
+      database:
+        condition: service_healthy
+    restart: unless-stopped
+    volumes:
+      - api_logs:/app/apps/api/logs:rw
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:5000/api/v1/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '0.5'
+        reservations:
+          memory: 512M
+          cpus: '0.25'
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp:rw,size=100M
+
+  # Web Frontend
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      args:
+        - VITE_API_BASE_URL=${VITE_API_BASE_URL}
+        - VITE_CHAIN_ID=${VITE_CHAIN_ID:-1}
+        - VITE_WALLETCONNECT_PROJECT_ID=${VITE_WALLETCONNECT_PROJECT_ID}
+    container_name: ngdocuvault-web-prod
+    ports:
+      - "127.0.0.1:3000:3000"  # Bind to localhost only (use reverse proxy)
+    networks:
+      - ngdocuvault-prod-network
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: '0.25'
+        reservations:
+          memory: 128M
+          cpus: '0.1'
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /var/cache/nginx:rw,size=10M
+      - /var/run:rw,size=10M
+
+  # Redis for Session Storage and Caching
+  redis:
+    image: redis:7-alpine
+    container_name: ngdocuvault-redis-prod
+    ports:
+      - "127.0.0.1:6379:6379"
+    networks:
+      - ngdocuvault-prod-network
+    volumes:
+      - redis_data:/data
+      - ./redis.conf:/usr/local/etc/redis/redis.conf:ro
+    command: redis-server /usr/local/etc/redis/redis.conf
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.25'
+        reservations:
+          memory: 256M
+          cpus: '0.1'
+    security_opt:
+      - no-new-privileges:true
+
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: ngdocuvault-nginx-prod
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - ngdocuvault-prod-network
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+      - nginx_logs:/var/log/nginx
+    depends_on:
+      - web
+      - api
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "nginx", "-t"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: '0.25'
+        reservations:
+          memory: 128M
+          cpus: '0.1'
+    security_opt:
+      - no-new-privileges:true
+
+  # Monitoring with Prometheus (optional)
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: ngdocuvault-prometheus
+    ports:
+      - "127.0.0.1:9090:9090"
+    networks:
+      - ngdocuvault-prod-network
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    restart: unless-stopped
+    profiles:
+      - monitoring
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.25'
+
+  # Log aggregation with Grafana (optional)
+  grafana:
+    image: grafana/grafana:latest
+    container_name: ngdocuvault-grafana
+    ports:
+      - "127.0.0.1:3001:3000"
+    networks:
+      - ngdocuvault-prod-network
+    volumes:
+      - grafana_data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-admin}
+    restart: unless-stopped
+    profiles:
+      - monitoring
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: '0.25'
+
+volumes:
+  postgres_data:
+    driver: local
+  api_logs:
+    driver: local
+  redis_data:
+    driver: local
+  nginx_logs:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+
+networks:
+  ngdocuvault-prod-network:
+    driver: bridge
+    name: ngdocuvault-prod-network
+    internal: false

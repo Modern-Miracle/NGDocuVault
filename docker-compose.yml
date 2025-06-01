@@ -1,0 +1,172 @@
+# NGDocuVault Development Docker Compose
+# Complete development stack with all services
+
+version: '3.8'
+
+services:
+  # SQL Server Database
+  database:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: ngdocuvault-database
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=DocuVault123!
+      - MSSQL_PID=Developer
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssql_data:/var/opt/mssql
+    networks:
+      - ngdocuvault-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P DocuVault123! -Q 'SELECT 1'"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # Hardhat Blockchain Node
+  blockchain:
+    build:
+      context: .
+      dockerfile: apps/contract/Dockerfile
+    container_name: ngdocuvault-blockchain
+    ports:
+      - "8545:8545"
+    networks:
+      - ngdocuvault-network
+    restart: unless-stopped
+    volumes:
+      - blockchain_data:/app/apps/contract/cache
+      - blockchain_artifacts:/app/apps/contract/artifacts
+    environment:
+      - NODE_ENV=development
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8545 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # API Backend
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    container_name: ngdocuvault-api
+    ports:
+      - "5000:5000"
+    networks:
+      - ngdocuvault-network
+    environment:
+      - NODE_ENV=development
+      - PORT=5000
+      - DATABASE_URL=Server=database,1433;Database=ngdocuvault;User Id=sa;Password=DocuVault123!;TrustServerCertificate=true
+      - LOCAL_RPC_URL=http://blockchain:8545
+      - JWT_SECRET=dev-jwt-secret-change-in-production
+      - SESSION_SECRET=dev-session-secret-change-in-production
+      - CORS_ORIGIN=http://localhost:3000
+      - WEB3_STORAGE_TOKEN=${WEB3_STORAGE_TOKEN:-}
+      - PINATA_JWT=${PINATA_JWT:-}
+    depends_on:
+      database:
+        condition: service_healthy
+      blockchain:
+        condition: service_healthy
+    restart: unless-stopped
+    volumes:
+      - api_logs:/app/apps/api/logs
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:5000/api/v1/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    command: >
+      sh -c "
+        echo 'Waiting for services to be ready...' &&
+        sleep 30 &&
+        echo 'Setting up database...' &&
+        pnpm db:setup || true &&
+        echo 'Starting API server...' &&
+        node dist/src/server.js
+      "
+
+  # Web Frontend
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      args:
+        - VITE_API_BASE_URL=http://localhost:5000
+        - VITE_CHAIN_ID=31337
+        - VITE_LOCAL_RPC_URL=http://localhost:8545
+        - VITE_WALLETCONNECT_PROJECT_ID=${VITE_WALLETCONNECT_PROJECT_ID:-}
+    container_name: ngdocuvault-web
+    ports:
+      - "3000:3000"
+    networks:
+      - ngdocuvault-network
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # IPFS Node (optional, for local IPFS instead of Web3.Storage/Pinata)
+  ipfs:
+    image: ipfs/kubo:latest
+    container_name: ngdocuvault-ipfs
+    ports:
+      - "5001:5001"  # API
+      - "8080:8080"  # Gateway
+    networks:
+      - ngdocuvault-network
+    volumes:
+      - ipfs_data:/data/ipfs
+    environment:
+      - IPFS_PROFILE=server
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "ipfs id || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # Redis Cache (optional, for session storage and caching)
+  redis:
+    image: redis:7-alpine
+    container_name: ngdocuvault-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - ngdocuvault-network
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+volumes:
+  mssql_data:
+    driver: local
+  blockchain_data:
+    driver: local
+  blockchain_artifacts:
+    driver: local
+  api_logs:
+    driver: local
+  ipfs_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  ngdocuvault-network:
+    driver: bridge
+    name: ngdocuvault-network

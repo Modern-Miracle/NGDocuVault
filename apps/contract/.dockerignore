@@ -1,0 +1,69 @@
+# Smart Contract .dockerignore
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Hardhat
+artifacts/
+cache/
+coverage/
+typechain-types/
+
+# Circuit files (large)
+circuits/**/*.ptau
+circuits/**/*.r1cs
+circuits/**/*.wasm
+circuits/**/*.zkey
+circuits/**/*.wtns
+
+# Build outputs
+dist/
+build/
+out/
+
+# Testing
+coverage/
+.nyc_output/
+
+# Environment files
+.env*
+!.env.example
+
+# IDEs and editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+log/
+
+# Documentation
+README.md
+docs/
+
+# Git
+.git/
+.gitignore
+
+# Docker
+Dockerfile*
+docker-compose*.yml
+
+# Deployments (may contain sensitive info)
+deployments/
+scripts/
+
+# Testing artifacts
+test/
+__tests__/

@@ -15,7 +15,7 @@
 
 > **🇪🇺 EU Funded Project**: NGDocuVault is proudly supported by the [NGI Sargasso](https://ngisargasso.eu/) programme, fostering transatlantic collaboration between the EU, US, and Canada in Next Generation Internet technologies. This project has received funding from the European Union's Horizon Europe research and innovation programme.
 
-> **🏛️ Organizations**: Developed by [Hora e.V.](https://hora-ev.eu) in collaboration with [Modern Miracle](https://modern-miracle.com), focusing on innovative document security solutions for vulnerable populations and enterprises.
+> **🏛️ Organizations**: Developed by [Hora e.V.](https://hora-ev.eu) in collaboration with [Modern Miracle](https://modern-miracle.com) and [Juris Canada](https://www.linkedin.com/company/juriscanada/), focusing on innovative document security solutions for vulnerable populations and enterprises with comprehensive legal & compliance expertise.
 
 > **📋 License**: This project is licensed under the [GNU Affero General Public License v3.0 (AGPL-3.0)](https://www.gnu.org/licenses/agpl-3.0.en.html). This ensures that any modifications or network-based services using this code must also be open source.
 
@@ -503,6 +503,7 @@ We chose AGPL v3 to ensure that improvements to document security technology rem
 For proprietary or commercial use that cannot comply with AGPL v3 terms, please contact:
 - **Hora e.V.**: [contact@hora-ev.eu](mailto:contact@hora-ev.eu)
 - **Modern Miracle**: [contact@modern-miracle.com](mailto:contact@modern-miracle.com)
+- **Juris Canada**: [LinkedIn](https://www.linkedin.com/company/juriscanada/) (Legal & Compliance)
 
 ## 🏛️ **Organizations**
 
@@ -511,6 +512,9 @@ Hora e.V. is a German non-profit organization dedicated to developing innovative
 
 ### [Modern Miracle](https://modern-miracle.com)
 Modern Miracle specializes in cutting-edge document security and blockchain technology solutions, bringing together expertise in cryptography, distributed systems, and enterprise software development.
+
+### [Juris Canada](https://www.linkedin.com/company/juriscanada/)
+Juris Canada provides specialized legal and compliance expertise for cross-jurisdictional document verification and identity management, ensuring NGDocuVault meets the complex regulatory requirements across EU, US, and Canadian legal frameworks while supporting immigrant and refugee populations.
 
 ## 🇪🇺 **EU Funding & Acknowledgments**
 
