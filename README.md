@@ -501,8 +501,8 @@ We chose AGPL v3 to ensure that improvements to document security technology rem
 
 ### **Commercial Licensing**
 For proprietary or commercial use that cannot comply with AGPL v3 terms, please contact:
-- **Hora e.V.**: [contact@hora-ev.eu](mailto:contact@hora-ev.eu)
-- **Modern Miracle**: [contact@modern-miracle.com](mailto:contact@modern-miracle.com)
+- **Hora e.V.**: [info@hora-ev.eu](mailto:info@hora-ev.eu)
+- **Modern Miracle**: [hello@modern-miracle.com](mailto:hello@modern-miracle.com)
 
 ## 🏛️ **Organizations**
 
